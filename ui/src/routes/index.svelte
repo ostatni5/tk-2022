@@ -4,6 +4,7 @@
 
 <script lang="ts">
 	import Counter from '$lib/Counter.svelte';
+	import ResultsList from '$lib/ResultsList.svelte';
 </script>
 
 <svelte:head>
@@ -22,16 +23,15 @@
 		to your new<br />SvelteKit app
 	</h1>
 
-
 	<h2>
 		try editing <strong>src/routes/index.svelte</strong>
 	</h2>
 
-	<h3>
-		Jest test text
-	</h3>
+	<h3>Jest test text</h3>
 
 	<Counter />
+
+	<ResultsList />
 </section>
 
 <style>
