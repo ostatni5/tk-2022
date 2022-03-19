@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SvelteTable from 'svelte-table';
+	import SvelteTable from 'svelte-table/src/index';
 	import { resultsData } from './data';
 
 	const rows = resultsData;

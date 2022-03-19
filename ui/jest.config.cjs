@@ -4,6 +4,7 @@ module.exports = {
 		'^.+\\.ts$': 'ts-jest',
 		'^.+\\.js$': 'ts-jest'
 	},
+	transformIgnorePatterns: ['node_modules/(?!(svelte-table))'],
 	moduleFileExtensions: ['js', 'ts', 'svelte'],
 	moduleNameMapper: {
 		'^\\$lib(.*)$': '<rootDir>/src/lib$1',
