@@ -4,7 +4,7 @@
 
 <script lang="ts">
 	import Counter from '$lib/Counter.svelte';
-	import ResultsList from '$lib/ResultsList.svelte';
+	import ResultsList from '$lib/resultsList/ResultsList.svelte';
 </script>
 
 <svelte:head>
