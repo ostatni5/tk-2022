@@ -19,14 +19,14 @@
 			}
 		}
 
-		prepareColumns['url'].renderValue = (v) => `<img src="https://picsum.photos/seed/${v.name}/20/20" alt="icon" width=20 height=20 >`;
+		prepareColumns['url'].renderValue = (v) =>
+			`<img src="https://picsum.photos/seed/${v.name}/20/20" alt="icon" width=20 height=20 >`;
 		prepareColumns['url'].title = 'IMAGE';
 
 		for (const key in prepareColumns) {
 			columns.push(prepareColumns[key]);
 		}
 	}
-
 
 	const exludeColumns = ['url'];
 	let search: string = '';
