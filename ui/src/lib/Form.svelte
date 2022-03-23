@@ -55,20 +55,18 @@
     <div class="inputContainer">
         <p class="inputContainerTitle" on:click={handleMetadataClick}>Metadata <i class="arrow {arrowDirection}"></i></p>
         {#if metadataVisible}
-        <div transition:slide>
+        <div class="moduleForm" transition:slide>
             <label>Author
                 <input type="text" bind:value={formData.author} placeholder="John Smith"/>
+            </label>
+            <label>Extension
+                <input type="text" bind:value={formData.extension} placeholder="png"/>
             </label>
             <label>Date of creation
                 <input type="date" bind:value={formData.dateOfCreation} on:change={changeDate}/>
             </label>
-            <br>
             <label>Date of modification
                 <input type="date" bind:value={formData.dateOfModification} on:change={changeDate}/>
-            </label>
-            <br>
-            <label>Extension
-                <input type="text" bind:value={formData.extension} placeholder="png"/>
             </label>
         </div>
         {/if}
@@ -83,7 +81,7 @@
 {/if}
 
 
-<style>
+<style lang="scss">
     label {
         margin-top: 15px;
         display:inline-block;
@@ -155,6 +153,14 @@
         margin: 0;
         font-weight: bold;
         color: black;
+    }
+    .moduleForm {
+        label {
+            flex: 0 1 45%;
+        }
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
     }
 
     .arrow {
