@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
     push:
-        branches: [master]
+        branches: [main]
     pull_request:
-        branches: [master]
+        branches: [main]
 
 # see https://github.community/t/treating-warnings-as-errors-because-process-env-ci-true/18032
 env:
@@ -30,5 +30,5 @@ jobs:
                   node-version: ${{ matrix.node-version }}
                   cache: 'npm'
             - run: npm ci
-            - run: npm run build --if-present
-            - run: npm test
+            - run: npm run build --workspaces --if-present
+            - run: npm test --workspaces
