@@ -17,7 +17,7 @@
 		"typescript": "^4.6.2"
 	},
 	"scripts": {
-		"test": "jest --detectOpenHandles --watch --verbose false",
+		"test": "jest --detectOpenHandles --verbose false",
 		"clear": "jest --clearCache",
 		"start": "concurrently --kill-others \"npm run example\" \"npm run traverse\"",
 		"dev": "ts-node-dev --respawn ./src/index.ts",
