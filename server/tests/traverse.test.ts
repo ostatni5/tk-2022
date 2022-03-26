@@ -1,26 +1,36 @@
-import request from 'supertest';
+import supertest from 'supertest';
 import traverse from '../src/modules/traverseModule/traverse';
-import fs from 'fs';
-import { serialize } from 'bson';
+import { serialize, deserialize } from 'bson';
 const testRequest = {
-	path: './tests/traverse.test.bson',
+	path: './tests/',
 	modules: []
 };
 
 describe('Test default path', () => {
-	beforeAll(() => {
-		fs.writeFileSync('./tests/traverse.test.bson', serialize(testRequest));
-	});
-	afterAll(() => {
-		fs.unlinkSync('./tests/traverse.test.bson');
-	});
-	test('It should response with status 200', (done) => {
-		console.log(testRequest);
-		request(traverse)
+	test('should response with status 200 and valid binary buffer', (done) => {
+		const chunks: Buffer[] = [];
+		supertest(traverse)
 			.post('/')
+			.set('Content-Type', 'application/octet-stream')
 			.send(serialize(testRequest))
-			.then(({ statusCode }: { statusCode: number }) => {
-				expect(statusCode).toBe(200);
+			.expect(200)
+			.expect('Content-Type', /octet-stream/)
+			.buffer()
+			.parse((res, callback) => {
+				res.on('data', (chunk) => {
+					chunks.push(Buffer.from(chunk));
+				});
+				res.on('end', () => {
+					callback(null, null);
+				});
+			})
+			.end((err, res) => {
+				if (err) {
+					throw err;
+				}
+				const response = deserialize(Buffer.concat(chunks));
+				expect(response).toBeDefined();
+				console.log('response', response);
 				done();
 			});
 	});
