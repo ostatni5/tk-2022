@@ -1,15 +1,14 @@
 import traverse from './traverseModule/traverse';
 import example from './exampleModule/example';
 
-export type ModuleType = keyof typeof modulesConfig;
+export type ModuleType = keyof typeof moduleManager;
 
-export const modulesConfig = {
+export const moduleManager = {
 	traverse,
 	example
 } as const;
 
 export function isModuleType(value: string | undefined): value is ModuleType {
 	if (typeof value === 'undefined') return false;
-
-	return value in [...Object.keys(modulesConfig)];
+	return Object.keys(moduleManager).includes(value);
 }

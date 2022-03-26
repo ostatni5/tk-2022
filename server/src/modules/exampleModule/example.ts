@@ -1,10 +1,10 @@
 import express, { Request, Response, Application } from 'express';
 const exampleModule: Application = express();
-const cors = require('cors');
+import cors from 'cors';
 
 //this is default response for all routes
 exampleModule.get('/', (req: Request, res: Response): void => {
-	res.status(404).json({ msg: 'This is the response from the server!' });
+	res.status(200).json({ msg: 'This is the response from the server!' });
 });
 
 //this is a route with enabled cors
