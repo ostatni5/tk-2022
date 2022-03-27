@@ -20,7 +20,7 @@
 		}
 
 		prepareColumns['url'].renderValue = (v) =>
-			`<img src="https://picsum.photos/seed/${v.name}/20/20" alt="icon" width=20 height=20 >`;
+			`<img src="https://picsum.photos/seed/${v.name}/100/100" alt="icon" width=100 height=80 >`;
 		prepareColumns['url'].title = 'IMAGE';
 
 		for (const key in prepareColumns) {
@@ -28,12 +28,12 @@
 		}
 	}
 
-	const exludeColumns = ['url'];
+	const excludeColumns = ['url'];
 	let search: string = '';
 	$: visibleRows = search
 		? rows.filter((el) => {
 				for (const key in el) {
-					if (exludeColumns.includes(key)) continue;
+					if (excludeColumns.includes(key)) continue;
 
 					if (Object.prototype.hasOwnProperty.call(el, key)) {
 						const element: string | number = el[key];
@@ -49,7 +49,7 @@
 	$: visibleColumns = columns.filter((el) => !hiddenColumns.includes(el.key));
 </script>
 
-<label>Search in resluts: <input bind:value={search} /></label>
+<label>Search in results: <input bind:value={search} /></label>
 <div>
 	<p>Hide columns</p>
 	{#each columns as column}
