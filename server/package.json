@@ -19,10 +19,11 @@
 	"scripts": {
 		"test": "jest --detectOpenHandles --verbose false",
 		"clear": "jest --clearCache",
-		"start": "concurrently --kill-others \"npm run example\" \"npm run traverse\"",
+		"start": "concurrently --kill-others \"npm run example\" \"npm run traverse\" \"npm run metadata\"",
 		"dev": "ts-node-dev --respawn ./src/index.ts",
 		"example": "cross-env NODE_TYPE=example PORT=8081 ts-node ./src/index.ts",
-		"traverse": "cross-env NODE_TYPE=traverse PORT=8082 ts-node ./src/index.ts"
+		"traverse": "cross-env NODE_TYPE=traverse PORT=8082 ts-node ./src/index.ts",
+		"metadata": "cross-env NODE_TYPE=metadata PORT=8083 ts-node ./src/index.ts"
 	},
 	"repository": {
 		"type": "git",
@@ -39,6 +40,8 @@
 		"bson": "^4.6.2",
 		"concurrently": "^7.0.0",
 		"cross-env": "^7.0.3",
+		"exif": "^0.6.0",
+		"exif-js": "^2.3.0",
 		"express": "^4.17.3",
 		"supertest": "^6.2.2"
 	}
