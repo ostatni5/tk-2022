@@ -2,6 +2,7 @@ import express, { Request, Response, Application } from 'express';
 import { deserialize, serialize } from 'bson';
 import PictureRequest from '../../classes/pictureRequest';
 import bodyParser from 'body-parser';
+import { getAllImages } from './filesFinder';
 
 const traverseModule: Application = express();
 
@@ -28,7 +29,7 @@ function handleRequest(request: PictureRequest): string[] {
 	return pictures;
 }
 function getPictures(path: string): string[] {
-	return [path];
+	return getAllImages(path);
 }
 
 export default traverseModule;
