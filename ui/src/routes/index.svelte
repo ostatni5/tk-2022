@@ -1,30 +1,30 @@
 <script context="module" lang="ts">
-	export const prerender = true;
+    export const prerender = true;
 </script>
 
 <script lang="ts">
-	import Form from '$lib/Form.svelte';
-	import ResultsList from '../lib/resultsList/ResultsList.svelte';
+    import Form from '$lib/Form.svelte';
+    import ResultsList from '../lib/resultsList/ResultsList.svelte';
 </script>
 
 <svelte:head>
-	<title>ImageFinder</title>
+    <title>ImageFinder</title>
 </svelte:head>
 
 <section>
-	<Form />
+    <Form />
 </section>
 
 <section style="margin-top: 100px;">
-	<ResultsList />
+    <ResultsList />
 </section>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 1;
-	}
+    section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+    }
 </style>
