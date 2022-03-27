@@ -2,13 +2,13 @@
  * @jest-environment jsdom
  */
 
-import "@testing-library/jest-dom";
-import { render } from "@testing-library/svelte";
+import '@testing-library/jest-dom';
+import { render } from '@testing-library/svelte';
 import Header from '$lib/Header.svelte';
 
-describe("Test if app name in header is generated", () => {
-	test("Header test", () => {
-		const { getByText } = render(Header);
-		expect(getByText("ImageFinder")).toBeInTheDocument();
-	});
+describe('Test if app name in header is generated', () => {
+    test('Header test', () => {
+        const { getByText } = render(Header);
+        expect(getByText('ImageFinder')).toBeInTheDocument();
+    });
 });
