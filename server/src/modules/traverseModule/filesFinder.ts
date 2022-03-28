@@ -8,7 +8,7 @@ export function* directoryFilesGenerator(baseFolder: string, recursive: boolean 
 
     const regularFiles: string[] = absoluteFiles.filter((file: string) => fs.statSync(file).isFile());
     for (const file of regularFiles){
-        yield file;
+        yield file.split('\\').join('/');
     }
 
     if (recursive){
@@ -44,4 +44,24 @@ export function* directoryImagesGenerator(baseFolder: string, recursive: boolean
             yield file;
         }
     }
+}
+
+export const getAllFiles = (baseFolder: string, recursive: boolean = true): string[] => {
+    let files = [];
+    
+    for(const file of directoryFilesGenerator(baseFolder, recursive)){
+        files.push(file)
+    }
+    
+    return files;
+}
+
+export const getAllImages = (baseFolder: string, recursive = true): string[] => {
+    let files = [];
+    
+    for(const file of directoryFilesGenerator(baseFolder, recursive)){
+        if(isImage(file)) files.push(file);
+    }
+    
+    return files;
 }

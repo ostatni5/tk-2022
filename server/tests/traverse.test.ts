@@ -4,12 +4,12 @@ import { serialize, deserialize } from 'bson';
 import process from 'process';
 
 
-const rootPath = process.cwd();
+const rootPath = process.cwd().split('\\').join('/').split('/server')[0];
 
 const testCases = [
 	{
 		testRequest: {
-	        path: `${rootPath}\\server\\resources\\exampleImages`,
+	        path: `${rootPath}/server/resources/exampleImages`,
 	        moduleConfig: [
 	            {
 	                name: 'metadata',
@@ -23,7 +23,7 @@ const testCases = [
 	    },
 		testResponse: {
 			pictures: [
-			    `${rootPath}\\server\\resources\\exampleImages\\lizard2.jpg`,
+			    `${rootPath}/server/resources/exampleImages/lizard2.jpg`,
 			]
 		}
 	}
