@@ -1,8 +1,6 @@
 const ExifImage = require('exif').ExifImage;
 
 export function parseExifDate(exifDate: string): Date {
-    console.log(exifDate);
-
     let [stringDate, stringTime] = exifDate.split(' ')
     
     stringDate = stringDate.split(':').join('-');

@@ -1,6 +1,9 @@
-export default abstract class ModuleConfig {
-	name: string;
-	constructor(name: string) {
-		this.name = name;
-	}
+export interface ModuleConfig {
+	name: ModuleName;
+}
+
+export type ModuleName = keyof typeof ModuleRoutes;
+
+export const ModuleRoutes ={
+	'metadata': 'http://localhost:8083/',
 }
