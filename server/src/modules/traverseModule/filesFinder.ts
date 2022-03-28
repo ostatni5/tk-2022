@@ -50,6 +50,7 @@ const readChunk = (file: string, size: number): Buffer => {
 }
 
 export const isImage = (file: string) => {
+    // image-type needs first 12 bytes of a file to identify mime type
     const buffer: Buffer = readChunk(file, 12);
     return imageType(buffer)?.mime.startsWith("image/");
 }
