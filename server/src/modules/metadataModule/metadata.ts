@@ -51,7 +51,6 @@ async function filterMetadata(path: string, options: MetadataOptions): Promise<b
 
 function filterDate(imgData: any, options: MetadataOptions): boolean {
     if(!('CreateDate' in imgData.exif)){
-        console.log('No exif data :<');
         return false;
     }
     const dateCreated = parseExifDate(imgData.exif.CreateDate);
