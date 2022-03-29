@@ -1,5 +1,6 @@
 <script lang="ts">
     import Header from '$lib/Header.svelte';
+    import ImageFinder from '$lib/ImageFinder.svelte';
     import '../app.css';
 </script>
 
@@ -7,6 +8,7 @@
 
 <main>
     <slot />
+    <ImageFinder/>
 </main>
 
 <footer />

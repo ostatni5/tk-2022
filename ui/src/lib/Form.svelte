@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition';
     import { Shadow } from 'svelte-loading-spinners';
 
@@ -35,13 +36,18 @@
         input.style.color = input.value !== '' ? 'black' : '';
     };
 
+
+    const dispatch = createEventDispatcher();
+
     const handleSubmit = () => {
         if (isPath(formData.pathText)) {
             searching = true;
             console.log(formData);
         }
         setTimeout(() => (searching = false), 3000);
-    };
+        dispatch('search', formData);
+    }
+
 </script>
 
 <form on:submit|preventDefault={handleSubmit} autocomplete="off">
@@ -163,6 +169,7 @@
 
     form {
         width: 75%;
+        margin: 0 auto;
     }
 
     .inputContainer {

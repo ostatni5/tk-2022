@@ -11,13 +11,7 @@
     <title>ImageFinder</title>
 </svelte:head>
 
-<section>
-    <Form />
-</section>
 
-<section style="margin-top: 100px;">
-    <ResultsList />
-</section>
 
 <style>
     section {

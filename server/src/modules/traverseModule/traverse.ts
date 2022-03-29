@@ -3,6 +3,7 @@ import { deserialize, serialize } from 'bson';
 import PictureRequest from '../../classes/pictureRequest';
 import bodyParser from 'body-parser';
 import { getAllImages } from './filesFinder';
+import cors from 'cors';
 
 const traverseModule: Application = express();
 
@@ -15,7 +16,9 @@ const options = {
 
 traverseModule.use(bodyParser.raw(options));
 
-traverseModule.post('/', (req: any, res: Response): void => {
+traverseModule.use(cors());
+
+traverseModule.post('/', (req: Request, res: Response): void => {
 	console.log(deserialize(req.body));
 	const pictureRequest = new PictureRequest(req.body);
 	const buffer = { pictures: handleRequest(pictureRequest) };
