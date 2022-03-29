@@ -3,37 +3,34 @@ import traverse from '../src/modules/traverseModule/traverse';
 import { serialize, deserialize } from 'bson';
 import process from 'process';
 
-
 const rootPath = process.cwd().split('\\').join('/').split('/server')[0];
 
 const testCases = [
 	{
 		testRequest: {
-	        path: `${rootPath}/server/resources/exampleImages`,
-	        moduleConfig: [
-	            {
-	                name: 'metadata',
-	                dateBefore: new Date('2006-01-01T00:00:00')
-	            },
-	            {
-	                name: 'metadata',
-	                dateAfter: new Date('2005-01-01T00:00:00')
-	            }
-	        ]
-	    },
+			path: `${rootPath}/server/resources/exampleImages`,
+			moduleConfig: []
+		},
 		testResponse: {
 			pictures: [
-			    `${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/bike.jpg`,
+				`${rootPath}/server/resources/exampleImages/bus.jpg`,
+				`${rootPath}/server/resources/exampleImages/feather.jpg`,
+				`${rootPath}/server/resources/exampleImages/fish.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`
 			]
 		}
 	}
-]
-
-
+];
 
 describe('Test default path', () => {
 	test('should response with status 200 and valid binary buffer', (done) => {
-		for(const {testRequest, testResponse} of testCases){
+		for (const { testRequest, testResponse } of testCases) {
 			const chunks: Buffer[] = [];
 			supertest(traverse)
 				.post('/')

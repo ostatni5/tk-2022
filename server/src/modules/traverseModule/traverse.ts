@@ -2,8 +2,8 @@ import express, { Request, Response, Application } from 'express';
 import { deserialize, serialize } from 'bson';
 import PictureRequest from '../../classes/pictureRequest';
 import bodyParser from 'body-parser';
-import {directoryImagesGenerator} from './filesFinder'
-import {ModuleConfig, ModuleRoutes} from '../../classes/moduleConfig';
+import { directoryImagesGenerator } from './filesFinder';
+import { ModuleConfig, ModuleRoutes } from '../../classes/moduleConfig';
 import fetchPictures from '../../utils/fetchPictures';
 
 const BUFFER_SIZE = 10;
@@ -22,7 +22,7 @@ traverseModule.use(bodyParser.raw(options));
 traverseModule.post('/', async (req: any, res: Response): Promise<void> => {
 	console.log(deserialize(req.body));
 	const pictureRequest = new PictureRequest(req.body);
-	const buffer = { pictures:  await handleRequest(pictureRequest) };
+	const buffer = { pictures: await handleRequest(pictureRequest) };
 	res.status(200).send(serialize(buffer));
 	console.log(buffer);
 });
@@ -36,8 +36,8 @@ async function handleRequest(request: PictureRequest): Promise<string[]> {
 
 	let picture = pictureGenerator.next();
 
-	while(!picture.done){
-		if(pictureBuffer.length<BUFFER_SIZE){
+	while (!picture.done) {
+		if (pictureBuffer.length < BUFFER_SIZE) {
 			pictureBuffer.push(picture.value);
 		} else {
 			picturePromises.push(fetcher(pictureBuffer, request.moduleConfig));
@@ -51,17 +51,21 @@ async function handleRequest(request: PictureRequest): Promise<string[]> {
 }
 
 function fetcher(pictures: string[], configs: ModuleConfig[]) {
-	let fetchConfigs = configs.map(config => {
+	let fetchConfigs = configs.map((config) => {
 		return {
 			route: getRouteForConfig(config),
-			config: config,
+			config: config
 		};
 	});
 
 	// reduce to one promise
-	return fetchConfigs.slice(1).reduce((prev, curr) => prev.then(
-		val => fetchPictures(curr.route, {paths:val, options: curr.config})
-	), fetchPictures(fetchConfigs[0].route, {paths:pictures, options: fetchConfigs[0].config}));
+	return fetchConfigs.reduce(
+		(prev, curr) =>
+			prev.then((val) => fetchPictures(curr.route, { paths: val, options: curr.config })),
+		(async () => {
+			return pictures;
+		})()
+	);
 }
 
 function getRouteForConfig(config: ModuleConfig): string {
