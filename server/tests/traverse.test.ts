@@ -9,7 +9,7 @@ const testCases = [
 	{
 		testRequest: {
 			path: `${rootPath}/server/resources/exampleImages`,
-			moduleConfig: []
+			moduleConfig: [],
 		},
 		testResponse: {
 			pictures: [
@@ -22,10 +22,10 @@ const testCases = [
 				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
 				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
 				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
-				`${rootPath}/server/resources/exampleImages/ptsd.jpg`
-			]
-		}
-	}
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
+			],
+		},
+	},
 ];
 
 describe('Test default path', () => {
