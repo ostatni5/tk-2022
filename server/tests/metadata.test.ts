@@ -1,5 +1,4 @@
 import supertest from 'supertest';
-import { serialize, deserialize } from 'bson';
 import metadata from '../src/modules/metadataModule/metadata';
 
 const rootPath = process.cwd().split('\\').join('/').split('/server')[0];
@@ -135,25 +134,13 @@ describe('Test default path', () => {
 
 			supertest(metadata)
 				.post('/')
-				.set('Content-Type', 'application/octet-stream')
-				.send(serialize(testRequest))
+				.send(testRequest)
 				.expect(200)
-				.expect('Content-Type', /octet-stream/)
-				.buffer()
-				.parse((res, callback) => {
-					res.on('data', (chunk) => {
-						chunks.push(Buffer.from(chunk));
-					});
-					res.on('end', () => {
-						callback(null, null);
-					});
-				})
 				.end((err, res) => {
 					if (err) {
 						throw err;
 					}
-
-					const response = deserialize(Buffer.concat(chunks));
+					const response = res.body;
 					expect(response).toBeDefined();
 					expect(response).toEqual(testResponse);
 					done();
