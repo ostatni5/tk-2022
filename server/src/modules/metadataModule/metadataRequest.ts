@@ -1,13 +1,10 @@
-import { deserialize } from 'bson';
 import MetadataOptions from './metadataOptions';
-
 export default class MetadataRequest {
 	paths: string[];
 	options: MetadataOptions;
 
-	constructor(buffer: Buffer) {
-		const { paths, options } = deserialize(buffer);
-
+	constructor(data: MetadataRequest) {
+		const { paths, options } = data;
 		this.paths = paths;
 		this.options = options;
 	}
