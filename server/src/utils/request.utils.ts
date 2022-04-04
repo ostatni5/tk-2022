@@ -8,9 +8,8 @@ type Resolver = (body: any) => Promise<string[] | Error>;
 type Serializer = (data: Object) => Object | Buffer;
 type PicturePromisePayload = { paths: string[]; config: ModuleConfig };
 
-const getAbstractHandler: (serializer?: Serializer) => (resolver: Resolver) => Handler =
-	(serializer = (data) => data) =>
-	(resolver) =>
+export const getHandler: (resolver: Resolver, serializer?: Serializer) => Handler =
+	(resolver, serializer = (data) => data) =>
 	async (req, res) => {
 		try {
 			const data = { pictures: await resolver(req.body) };
@@ -20,10 +19,6 @@ const getAbstractHandler: (serializer?: Serializer) => (resolver: Resolver) => H
 			res.status(500).send(err);
 		}
 	};
-
-export const getHandler = getAbstractHandler();
-
-export const getBsonHandler = getAbstractHandler(serialize);
 
 async function picturePromise(route: string, payload: PicturePromisePayload): Promise<string[]> {
 	const res = await axios.post(route, JSON.stringify(payload), {

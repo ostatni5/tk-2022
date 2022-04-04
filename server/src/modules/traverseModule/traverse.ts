@@ -3,7 +3,8 @@ import PictureRequest from '../../classes/pictureRequest';
 import bodyParser from 'body-parser';
 import { directoryImagesGenerator } from './filesFinder';
 import { ModuleConfig, ModuleRoutes } from '../../classes/moduleConfig';
-import { getBsonHandler, promiseReduce } from '../../utils/request.utils';
+import { getHandler, promiseReduce } from '../../utils/request.utils';
+import { serialize } from 'bson';
 
 const BUFFER_SIZE = 10;
 
@@ -18,7 +19,7 @@ const options = {
 
 traverseModule.use(bodyParser.raw(options));
 
-traverseModule.post('/', getBsonHandler(handleRequest));
+traverseModule.post('/', getHandler(handleRequest, serialize));
 
 async function handleRequest(payload: Buffer): Promise<string[]> {
 	const request = new PictureRequest(payload);
