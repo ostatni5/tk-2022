@@ -53,10 +53,8 @@ defmodule Ocr do
   end
 
   def checkImage(path, options) do
-    IO.puts(path)
     outputOcr = TesseractOcr.read(path)
     checked = Enum.map(options, fn option -> parseOption(option).(outputOcr) end)
-    IO.inspect(checked)
     Enum.all?(checked)
   end
 

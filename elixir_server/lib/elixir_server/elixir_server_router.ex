@@ -10,12 +10,9 @@ defmodule ElixirServer.Router do
   plug(:dispatch)
 
   post "/" do
-    IO.puts("OCR request")
     {:ok, body, conn} = read_body(conn)
 
     body = Poison.decode!(body)
-    IO.inspect(body)
-
     paths = Map.get(body, "paths") || []
     options = Map.get(body, "options") || %{}
 

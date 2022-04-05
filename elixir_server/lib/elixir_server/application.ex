@@ -17,11 +17,6 @@ defmodule ElixirServer.Application do
       )
     ]
 
-    {output, _} = System.cmd("cmd.exe", ["/c", "echo", "%cd%"])
-    IO.puts("Current path is #{output}")
-
-
-
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: ElixirServer.Supervisor]
