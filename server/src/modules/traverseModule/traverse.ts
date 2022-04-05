@@ -4,6 +4,7 @@ import PictureRequest from '../../classes/pictureRequest';
 import bodyParser from 'body-parser';
 import { getAllImages } from './filesFinder';
 import cors from 'cors';
+import fs from 'fs';
 
 const traverseModule: Application = express();
 
@@ -24,6 +25,12 @@ traverseModule.post('/', (req: Request, res: Response): void => {
 	const buffer = { pictures: handleRequest(pictureRequest) };
 	res.status(200).send(serialize(buffer));
 	console.log(buffer);
+});
+
+traverseModule.get('/image/*', (req: Request, res: Response): void => {
+	const imageURL = decodeURI(req.url.replace('/image/', ''));
+	const img = fs.readFileSync(imageURL);
+	res.status(200).end(img, 'binary');
 });
 
 function handleRequest(request: PictureRequest): string[] {

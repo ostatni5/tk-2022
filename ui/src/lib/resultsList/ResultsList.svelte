@@ -1,7 +1,18 @@
 <script lang="ts">
     import SvelteTable from 'svelte-table/src/index';
-    // import { resultsData } from './data';
     import { afterUpdate } from 'svelte';
+    import Gallery from 'svelte-gallery';
+
+    const images = [
+        { src: 'https://source.unsplash.com/random' },
+        { src: 'https://source.unsplash.com/random'},
+        { src: 'https://source.unsplash.com/random'},
+        { src: 'https://source.unsplash.com/random'},
+        { src: 'https://source.unsplash.com/random' },
+        { src: 'https://source.unsplash.com/random'},
+        { src: 'https://source.unsplash.com/random'},
+        { src: 'https://source.unsplash.com/random'}
+    ];
 
     export let data: {url: string}[] = [];
 
@@ -31,14 +42,8 @@
                 }
             }
 
-            // console.log(prepareColumns['url'])
-            // prepareColumns['url'].renderValue = (v) =>
-            //     `<a href="${v.url}" target="_explorer.exe">Link Text</a>`
-            //     // `<button style="width:100px;height:100px;" onclick="console.log('we'); window.open('${v.url}', '_blank').focus();"></button>`
-            //     // `<a href="${v.url}">${v.url}</a>`
-            // // `<img src='${v.url}' width=100 height=80 onError="console.log(this.onerror)">`;
-            // // `<div style="background-image:url('${v.url}');width:100px;height:80px;" onError="console.log(this.onerror)">`;
-            // prepareColumns['url'].title = 'IMAGE';
+            prepareColumns['url'].renderValue = (v) => `<img src='http://127.0.0.1:8082/image/${v.url}' width=100 height=80 loading="lazy" >`;
+            prepareColumns['url'].title = 'IMAGE';
 
             for (const key in prepareColumns) {
                 columns.push(prepareColumns[key]);
@@ -81,4 +86,7 @@
     {/each}
 </div>
 
+
 <SvelteTable columns={visibleColumns} rows={visibleRows} />
+
+<Gallery {images}  rowHeight={220}/>
