@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import traverse from '../src/modules/traverseModule/traverse';
+import traverse from '../src/modules/traverseModule/main';
 import { serialize, deserialize } from 'bson';
 import process from 'process';
 
