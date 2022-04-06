@@ -1,9 +1,9 @@
-defmodule ElixirServer.MixProject do
+defmodule TextServer.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :elixir_server,
+      app: :text_server,
       version: "0.1.0",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
@@ -15,7 +15,7 @@ defmodule ElixirServer.MixProject do
   def application do
     [
       extra_applications: [:logger, :plug_cowboy, :plug, :poison,:tesseract_ocr],
-      mod: {ElixirServer.Application, []}
+      mod: {TextServer.Application, []}
     ]
   end
 

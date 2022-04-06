@@ -1,7 +1,7 @@
-defmodule ElixirServerTest do
+defmodule TextServerTest do
   use ExUnit.Case
   use Plug.Test
-  @options ElixirServer.Router.init([])
+  @options TextServer.Router.init([])
 
   @rootDir File.cwd!()
 
@@ -12,8 +12,8 @@ defmodule ElixirServerTest do
       "#{@rootDir}/test/resources/not_text.png",
       "#{@rootDir}/test/resources/text.png",
       "#{@rootDir}/test/resources/text.png",
-      "#{@rootDir}/test/resources/pattern.png",
-      "#{@rootDir}/test/resources/pattern.png",
+      "#{@rootDir}/test/resources/pattern_text.png",
+      "#{@rootDir}/test/resources/pattern_text.png",
       "#{@rootDir}/test/resources/nofile.png"
     ]
   }
@@ -23,7 +23,7 @@ defmodule ElixirServerTest do
       :post
       |> conn("/", Poison.encode!(testData))
       |> put_req_header("content-type", "application/json")
-      |> ElixirServer.Router.call(@options)
+      |> TextServer.Router.call(@options)
 
     resp = Poison.decode!(conn.resp_body)
 
@@ -36,8 +36,8 @@ defmodule ElixirServerTest do
     expected = [
       "#{@rootDir}/test/resources/text.png",
       "#{@rootDir}/test/resources/text.png",
-      "#{@rootDir}/test/resources/pattern.png",
-      "#{@rootDir}/test/resources/pattern.png"
+      "#{@rootDir}/test/resources/pattern_text.png",
+      "#{@rootDir}/test/resources/pattern_text.png"
     ]
 
     testConn(testData, expected)
@@ -91,8 +91,8 @@ defmodule ElixirServerTest do
     expected = [
       "#{@rootDir}/test/resources/not_text.png",
       "#{@rootDir}/test/resources/not_text.png",
-      "#{@rootDir}/test/resources/pattern.png",
-      "#{@rootDir}/test/resources/pattern.png",
+      "#{@rootDir}/test/resources/pattern_text.png",
+      "#{@rootDir}/test/resources/pattern_text.png",
       "#{@rootDir}/test/resources/nofile.png"
     ]
 
@@ -103,8 +103,8 @@ defmodule ElixirServerTest do
     testData = Map.put(@data, "options", %{"hasText" => true, "maxLength" => 100})
 
     expected = [
-      "#{@rootDir}/test/resources/pattern.png",
-      "#{@rootDir}/test/resources/pattern.png"
+      "#{@rootDir}/test/resources/pattern_text.png",
+      "#{@rootDir}/test/resources/pattern_text.png"
     ]
 
     testConn(testData, expected)

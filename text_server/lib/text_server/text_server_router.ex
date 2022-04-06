@@ -1,4 +1,4 @@
-defmodule ElixirServer.Router do
+defmodule TextServer.Router do
   use Plug.Router
   use Plug.Debugger
   require Logger
