@@ -2,8 +2,8 @@
 
 ## Info
 
-Download tesseract:
-<https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v4.1.0.20190314.exe>
+Install tesseract 4.1.0:
+<https://tesseract-ocr.github.io/tessdoc/Installation.html>
 
 Install elixir
 
