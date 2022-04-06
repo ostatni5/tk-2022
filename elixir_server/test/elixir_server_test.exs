@@ -1,14 +1,6 @@
 defmodule ElixirServerTest do
   use ExUnit.Case
   use Plug.Test
-  doctest ElixirServer
-
-  test "greets the world" do
-    assert ElixirServer.hello() == :world
-  end
-
-  use ExUnit.Case
-
   @options ElixirServer.Router.init([])
 
   @rootDir File.cwd!()
@@ -51,6 +43,18 @@ defmodule ElixirServerTest do
     testConn(testData, expected)
   end
 
+  test "has no text" do
+    testData = Map.put(@data, "options", %{"hasText" => false})
+
+    expected = [
+      "#{@rootDir}/test/resources/not_text.png",
+      "#{@rootDir}/test/resources/not_text.png",
+      "#{@rootDir}/test/resources/nofile.png"
+    ]
+
+    testConn(testData, expected)
+  end
+
   test "contains text ''" do
     testData = Map.put(@data, "options", %{"containsText" => ""})
 
@@ -70,8 +74,8 @@ defmodule ElixirServerTest do
     testConn(testData, expected)
   end
 
-  test "minLenght 100" do
-    testData = Map.put(@data, "options", %{"minLenght" => 100})
+  test "minLength 100" do
+    testData = Map.put(@data, "options", %{"minLength" => 100})
 
     expected = [
       "#{@rootDir}/test/resources/text.png",
@@ -81,8 +85,8 @@ defmodule ElixirServerTest do
     testConn(testData, expected)
   end
 
-  test "maxLenght 100" do
-    testData = Map.put(@data, "options", %{"maxLenght" => 100})
+  test "maxLength 100" do
+    testData = Map.put(@data, "options", %{"maxLength" => 100})
 
     expected = [
       "#{@rootDir}/test/resources/not_text.png",
@@ -95,8 +99,8 @@ defmodule ElixirServerTest do
     testConn(testData, expected)
   end
 
-  test "maxLenght 100 and has text" do
-    testData = Map.put(@data, "options", %{"hasText" => true, "maxLenght" => 100})
+  test "maxLength 100 and has text" do
+    testData = Map.put(@data, "options", %{"hasText" => true, "maxLength" => 100})
 
     expected = [
       "#{@rootDir}/test/resources/pattern.png",

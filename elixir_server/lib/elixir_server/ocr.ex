@@ -3,8 +3,14 @@ defmodule Ocr do
     true
   end
 
-  def hasText(outputOcr) do
-    String.length(outputOcr) > 0
+  def hasText(flag, outputOcr) do
+    has = String.length(outputOcr) > 0
+
+    if flag do
+      has
+    else
+      not has
+    end
   end
 
   def containsText(text, outputOcr) do
@@ -35,15 +41,15 @@ defmodule Ocr do
 
     case name do
       "hasText" ->
-        &hasText/1
+        &hasText(param, &1)
 
       "containsText" ->
         &containsText(String.downcase(param), String.downcase(&1))
 
-      "minLenght" ->
+      "minLength" ->
         &minLength(param, &1)
 
-      "maxLenght" ->
+      "maxLength" ->
         &maxLength(param, &1)
 
       _ ->
