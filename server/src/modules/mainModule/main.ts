@@ -8,7 +8,7 @@ import { serialize } from 'bson';
 
 const BUFFER_SIZE = 10;
 
-const traverseModule: Application = express();
+const mainModule: Application = express();
 
 const options = {
 	//default options
@@ -17,9 +17,9 @@ const options = {
 	type: 'application/octet-stream',
 };
 
-traverseModule.use(bodyParser.raw(options));
+mainModule.use(bodyParser.raw(options));
 
-traverseModule.post('/', getHandler(handleRequest, serialize));
+mainModule.post('/', getHandler(handleRequest, serialize));
 
 async function handleRequest(payload: Buffer): Promise<string[]> {
 	const request = new PictureRequest(payload);
@@ -50,15 +50,11 @@ const fetcher = (configs: ModuleConfig[], pictures: string[]) =>
 	promiseReduce(
 		configs.map((config) => {
 			return {
-				route: getRouteForConfig(config),
+				route: ModuleRoutes[config.name],
 				config: config,
 			};
 		}),
 		pictures,
 	);
 
-function getRouteForConfig(config: ModuleConfig): string {
-	return ModuleRoutes[config.name];
-}
-
-export default traverseModule;
+export default mainModule;

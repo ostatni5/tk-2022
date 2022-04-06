@@ -1,4 +1,4 @@
-import traverse from './traverseModule/traverse';
+import traverse from './traverseModule/main';
 import example from './exampleModule/example';
 import metadata from './metadataModule/metadata';
 
