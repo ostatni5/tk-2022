@@ -1,0 +1,20 @@
+{
+    "paths": [
+        "C:/Users/krzys/Documents/Repos/tk-2022/server/resources/exampleImages/bike.jpg",
+        "C:/Users/krzys/Documents/Repos/tk-2022/server/resources/exampleImages/bus.jpg",
+        "C:/Users/krzys/Documents/Repos/tk-2022/server/resources/exampleImages/feather.jpg",
+        "C:/Users/krzys/Documents/Repos/tk-2022/server/resources/exampleImages/fish.jpg",
+        "C:/Users/krzys/Documents/Repos/tk-2022/server/resources/exampleImages/flower1.jpg",
+        "C:/Users/krzys/Documents/Repos/tk-2022/server/resources/exampleImages/flower2.jpg",
+        "C:/Users/krzys/Documents/Repos/tk-2022/server/resources/exampleImages/lizard1.jpg",
+        "C:/Users/krzys/Documents/Repos/tk-2022/server/resources/exampleImages/lizard2.jpg",
+        "C:/Users/krzys/Documents/Repos/tk-2022/server/resources/exampleImages/lizard3.jpg",
+        "C:/Users/krzys/Documents/Repos/tk-2022/server/resources/exampleImages/ptsd.jpg",
+        "C:/Users/krzys/Documents/Repos/tk-2022/server/resources/exampleImages/trees.jpg"
+    ],
+    "options": {
+        "name": "metadata",
+	    "exposureTime": "0.004",
+	    "fNumber": "4.6"
+    }
+}

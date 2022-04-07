@@ -4,7 +4,7 @@ import metadata from '../src/modules/metadataModule/metadata';
 const rootPath = process.cwd().split('\\').join('/').split('/server')[0];
 
 const testCases = [
-	// Test case 1 - test if has exif
+	// Test case 1 - test if no option returns all
 	{
 		testRequest: {
 			paths: [
@@ -32,6 +32,8 @@ const testCases = [
 				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
 				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
 				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
 				`${rootPath}/server/resources/exampleImages/trees.jpg`,
 			],
 		},
@@ -92,7 +94,7 @@ const testCases = [
 			],
 		},
 	},
-	// Test case 4 - Test between
+	// Test case 4 - Test date between
 	{
 		testRequest: {
 			paths: [
@@ -120,6 +122,232 @@ const testCases = [
 				`${rootPath}/server/resources/exampleImages/fish.jpg`,
 				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
 				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
+			],
+		},
+	},
+	// Test case 5 - Test exposure time
+	{
+		testRequest: {
+			paths: [
+				`${rootPath}/server/resources/exampleImages/bike.jpg`,
+				`${rootPath}/server/resources/exampleImages/bus.jpg`,
+				`${rootPath}/server/resources/exampleImages/feather.jpg`,
+				`${rootPath}/server/resources/exampleImages/fish.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
+				`${rootPath}/server/resources/exampleImages/trees.jpg`,
+			],
+			options: {
+				exposureTime: 0.004,
+			},
+		},
+		testResponse: {
+			pictures: [
+				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/trees.jpg`,
+			],
+		},
+	},
+	// Test case 6 - Test f number
+	{
+		testRequest: {
+			paths: [
+				`${rootPath}/server/resources/exampleImages/bike.jpg`,
+				`${rootPath}/server/resources/exampleImages/bus.jpg`,
+				`${rootPath}/server/resources/exampleImages/feather.jpg`,
+				`${rootPath}/server/resources/exampleImages/fish.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
+				`${rootPath}/server/resources/exampleImages/trees.jpg`,
+			],
+			options: {
+				fNumber: 4.9,
+			},
+		},
+		testResponse: {
+			pictures: [
+				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
+			],
+		},
+	},
+	// Test case 7 - Test f number
+	{
+		testRequest: {
+			paths: [
+				`${rootPath}/server/resources/exampleImages/bike.jpg`,
+				`${rootPath}/server/resources/exampleImages/bus.jpg`,
+				`${rootPath}/server/resources/exampleImages/feather.jpg`,
+				`${rootPath}/server/resources/exampleImages/fish.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
+				`${rootPath}/server/resources/exampleImages/trees.jpg`,
+			],
+			options: {
+				fNumber: 4.9,
+			},
+		},
+		testResponse: {
+			pictures: [
+				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
+			],
+		},
+	},
+	// Test case 8 - Test focal length
+	{
+		testRequest: {
+			paths: [
+				`${rootPath}/server/resources/exampleImages/bike.jpg`,
+				`${rootPath}/server/resources/exampleImages/bus.jpg`,
+				`${rootPath}/server/resources/exampleImages/feather.jpg`,
+				`${rootPath}/server/resources/exampleImages/fish.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
+				`${rootPath}/server/resources/exampleImages/trees.jpg`,
+			],
+			options: {
+				focalLength: 100,
+			},
+		},
+		testResponse: {
+			pictures: [
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+			],
+		},
+	},
+	// Test case 9 - Test focal length
+	{
+		testRequest: {
+			paths: [
+				`${rootPath}/server/resources/exampleImages/bike.jpg`,
+				`${rootPath}/server/resources/exampleImages/bus.jpg`,
+				`${rootPath}/server/resources/exampleImages/feather.jpg`,
+				`${rootPath}/server/resources/exampleImages/fish.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
+				`${rootPath}/server/resources/exampleImages/trees.jpg`,
+			],
+			options: {
+				focalLength: 100,
+			},
+		},
+		testResponse: {
+			pictures: [
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+			],
+		},
+	},
+	// Test case 10 - Test flash
+	{
+		testRequest: {
+			paths: [
+				`${rootPath}/server/resources/exampleImages/bike.jpg`,
+				`${rootPath}/server/resources/exampleImages/bus.jpg`,
+				`${rootPath}/server/resources/exampleImages/feather.jpg`,
+				`${rootPath}/server/resources/exampleImages/fish.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
+				`${rootPath}/server/resources/exampleImages/trees.jpg`,
+			],
+			options: {
+				flash: 24,
+			},
+		},
+		testResponse: {
+			pictures: [
+				`${rootPath}/server/resources/exampleImages/bike.jpg`,
+				`${rootPath}/server/resources/exampleImages/bus.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/trees.jpg`,
+			],
+		},
+	},
+	// Test case 11 - Test width between
+	{
+		testRequest: {
+			paths: [
+				`${rootPath}/server/resources/exampleImages/bike.jpg`,
+				`${rootPath}/server/resources/exampleImages/bus.jpg`,
+				`${rootPath}/server/resources/exampleImages/feather.jpg`,
+				`${rootPath}/server/resources/exampleImages/fish.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
+				`${rootPath}/server/resources/exampleImages/trees.jpg`,
+			],
+			options: {
+				pixelXDimMin: 100,
+				pixelXDimMax: 100,
+			},
+		},
+		testResponse: {
+			pictures: [
+				`${rootPath}/server/resources/exampleImages/bike.jpg`,
+				`${rootPath}/server/resources/exampleImages/bus.jpg`,
+				`${rootPath}/server/resources/exampleImages/fish.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
+			],
+		},
+	},
+	// Test case 12 - Test height between
+	{
+		testRequest: {
+			paths: [
+				`${rootPath}/server/resources/exampleImages/bike.jpg`,
+				`${rootPath}/server/resources/exampleImages/bus.jpg`,
+				`${rootPath}/server/resources/exampleImages/feather.jpg`,
+				`${rootPath}/server/resources/exampleImages/fish.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
+				`${rootPath}/server/resources/exampleImages/trees.jpg`,
+			],
+			options: {
+				pixelYDimMin: 70,
+				pixelYDimMax: 77,
+			},
+		},
+		testResponse: {
+			pictures: [
+				`${rootPath}/server/resources/exampleImages/bike.jpg`,
+				`${rootPath}/server/resources/exampleImages/bus.jpg`,
+				`${rootPath}/server/resources/exampleImages/fish.jpg`,
+				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
+				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
 			],
 		},
 	},

@@ -30,15 +30,26 @@ async function filterMetadata(path: string, options: MetadataOptions): Promise<b
 
 	const imgData: any = await getImageExif(path);
 
+	console.log(path, [imgData.exif.ExifImageHeight].flat()[0])
+
 	// Here we add filters as guards
-	const dateCreated = parseExifDate(imgData.exif.CreateDate);
-	const dateAfter = options?.dateAfter ? new Date(options.dateAfter): null;
-	const dateBefore = options?.dateBefore ? new Date(options.dateBefore): null;
+	const dateCreated = imgData.exif?.CreateDate ? parseExifDate(imgData.exif.CreateDate) : null;
+	const dateAfter = options?.dateAfter ? new Date(options.dateAfter) : null;
+	const dateBefore = options?.dateBefore ? new Date(options.dateBefore) : null;
+
 	if (!filterRange(dateCreated, dateAfter, dateBefore)) return false;
 
-	if (!filterValue(imgData.exif.Model, options.cameraModel)) return false;
+	if (!filterValue(imgData.exif.ExposureTime, options.exposureTime)) return false;
 
+	if (!filterValue(imgData.exif.FNumber, options.fNumber)) return false;
+	
+	if (!filterValue(imgData.exif.FocalLength, options.focalLength)) return false;
 
+	if (!filterValue(imgData.exif.Flash, options.flash)) return false;
+
+	if (!filterRange([imgData.exif.ExifImageWidth].flat()[0], options.pixelXDimMin, options.pixelXDimMax)) return false;
+
+	if (!filterRange([imgData.exif.ExifImageHeight].flat()[0], options.pixelYDimMin, options.pixelYDimMax)) return false;
 
 	return true;
 }
