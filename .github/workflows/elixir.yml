@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Node.js CI
+name: Elixir CI
 
 on:
   push:
@@ -14,21 +14,21 @@ env:
   CI: false
 
 jobs:
-  build_and_test:
+  test:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - uses: actions/setup-elixir@v1
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - run: npm ci
-      - run: npm run build --workspaces --if-present
-      - run: npm test --workspaces
+          otp-version: "22.2"
+          elixir-version: "1.13"
+          experimental-otp: true
+          
+      - run: sudo apt-get update
+      - name: install tesseract
+        run: sudo apt-get install tesseract-ocr -y
+      - run: tesseract --version
+      - working-directory: ./text_server
+        run: mix deps.get
+      - working-directory: ./text_server
+        run: mix test

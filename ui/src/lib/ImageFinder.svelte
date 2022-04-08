@@ -9,15 +9,24 @@
     const handleSearch = (e: any) => {
         const formData = e.detail;
 
+        const request = {
+            path: formData.pathText,
+            moduleConfig: [
+                {
+                    name: "metadata",
+                    dateAfter: new Date('2007-01-01T00:00:00'),
+                    dateBefore: new Date()
+                }
+            ]
+        };
+
         let chunks: Uint8Array = new Uint8Array();
         fetch('http://127.0.0.1:8082/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/octet-stream'
             },
-            body: serialize({
-                path: formData.pathText
-            })
+            body: serialize(request)
         })
         .then(async res => {
             const reader = res.body.getReader();
@@ -43,8 +52,7 @@
                     size: 777602,
                     dimensions: '3667x446',
                     name: item.replace(/^.*[\\\/]/, ''),
-                    gender: 'female',
-                    created: new Date().toJSON()
+                    created: new Date().toJSON() // toLocaleString()
                 })
             }
             results = items;
