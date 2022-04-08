@@ -23,6 +23,7 @@ const testCases = [
 				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
 				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
 				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
+				`${rootPath}/server/resources/exampleImages/trees.jpg`
 			],
 		},
 	},
