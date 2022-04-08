@@ -1,7 +1,5 @@
 <script lang="ts">
     import SvelteTable from 'svelte-table/src/index';
-    // import { resultsData } from './data';
-    import { afterUpdate } from 'svelte';
 
     export let data: {url: string}[] = [];
 
@@ -9,13 +7,11 @@
     let search: string = '';
     let hiddenColumns = [];
 
+    $: updateTable(data);
     $: visibleRows = [];
     $: visibleColumns = [];
 
-    // maybe change after update to $
-    // $: func(data);
-
-    afterUpdate(() => {
+    const updateTable = (data) => {
         columns = [];
         if (data.length > 0) {
             const prepareColumns = {};
@@ -30,15 +26,6 @@
                     };
                 }
             }
-
-            // console.log(prepareColumns['url'])
-            // prepareColumns['url'].renderValue = (v) =>
-            //     `<a href="${v.url}" target="_explorer.exe">Link Text</a>`
-            //     // `<button style="width:100px;height:100px;" onclick="console.log('we'); window.open('${v.url}', '_blank').focus();"></button>`
-            //     // `<a href="${v.url}">${v.url}</a>`
-            // // `<img src='${v.url}' width=100 height=80 onError="console.log(this.onerror)">`;
-            // // `<div style="background-image:url('${v.url}');width:100px;height:80px;" onError="console.log(this.onerror)">`;
-            // prepareColumns['url'].title = 'IMAGE';
 
             for (const key in prepareColumns) {
                 columns.push(prepareColumns[key]);
@@ -66,7 +53,7 @@
             : data;
 
         visibleColumns = columns.filter((el) => !hiddenColumns.includes(el.key));
-    })
+    }
 
 </script>
 

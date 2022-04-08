@@ -1,20 +1,24 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte'
     import { slide } from 'svelte/transition';
-    import { Shadow } from 'svelte-loading-spinners';
+
+    export let searching = false;
 
     let formData = {
-        pathText: '',
-        author: '',
-        dateOfCreation: '',
-        dateOfModification: '',
-        extension: ''
+        path: '',
+        metadata: {
+            active: false,
+            createdAfter: "",
+            createdBefore: ""
+        },
+        // text: {}
     };
 
     let wrongPath = true;
     let arrowDirection = 'down';
     let metadataVisible = false;
-    let searching = false;
+
+    const dispatch = createEventDispatcher();
 
     const isPath = (text: string) => {
         let re =
@@ -37,15 +41,10 @@
     };
 
 
-    const dispatch = createEventDispatcher();
-
     const handleSubmit = () => {
-        if (isPath(formData.pathText)) {
-            searching = true;
-            console.log(formData);
+        if (isPath(formData.path)) {
+            dispatch('search', formData);
         }
-        setTimeout(() => (searching = false), 3000);
-        dispatch('search', formData);
     }
 
 </script>
@@ -57,41 +56,43 @@
             <input
                 type="text"
                 on:input={handlePathInput}
-                bind:value={formData.pathText}
+                bind:value={formData.path}
                 placeholder="C:/images"
+                autocomplete="on"
             />
         </label>
-        {#if wrongPath && formData.pathText !== ''}
+        {#if wrongPath && formData.path !== ''}
             <p class="errorMessage">This is not a path</p>
         {/if}
     </div>
     <div class="inputContainer">
         <p class="inputContainerTitle" on:click={handleMetadataClick}>
+            <input type="checkbox" bind:checked={formData.metadata.active} on:click|stopPropagation/>
             Metadata <i class="arrow {arrowDirection}" />
         </p>
         {#if metadataVisible}
             <div class="moduleForm" transition:slide>
-                <label
+                <!-- <label
                     >Author
-                    <input type="text" bind:value={formData.author} placeholder="John Smith" />
+                    <input type="text" bind:value={formData.metadata.author} placeholder="John Smith" />
                 </label>
                 <label
                     >Extension
-                    <input type="text" bind:value={formData.extension} placeholder="png" />
-                </label>
+                    <input type="text" bind:value={formData.metadata.extension} placeholder="png" />
+                </label> -->
                 <label
-                    >Date of creation
+                    >Created after
                     <input
                         type="date"
-                        bind:value={formData.dateOfCreation}
+                        bind:value={formData.metadata.createdAfter}
                         on:change={changeDate}
                     />
                 </label>
                 <label
-                    >Date of modification
+                    >Created before
                     <input
                         type="date"
-                        bind:value={formData.dateOfModification}
+                        bind:value={formData.metadata.createdBefore}
                         on:change={changeDate}
                     />
                 </label>
@@ -102,10 +103,6 @@
         <input type="submit" value="Search" disabled={wrongPath || searching} />
     </div>
 </form>
-{#if searching}
-    <p style="margin-top: 70px;" />
-    <Shadow size="50" color="var(--secondary-color)" unit="px" duration="1s" />
-{/if}
 
 <style lang="scss">
     label {
