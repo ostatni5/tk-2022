@@ -30,9 +30,7 @@ async function filterMetadata(path: string, options: MetadataOptions): Promise<b
 	const imgData = await getImageExif(path);
 
 	// Here we add filters as guards
-	if (!filterDate(imgData, options)) return false;
-
-	return true;
+	return filterDate(imgData, options);
 }
 
 function filterDate(imgData: any, options: MetadataOptions): boolean {

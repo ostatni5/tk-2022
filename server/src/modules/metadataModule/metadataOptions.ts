@@ -1,7 +1,6 @@
-import { ModuleConfig, ModuleName } from '../../classes/moduleConfig';
+import { ModuleOptions } from '../../classes/moduleOptions';
 
-export default interface MetadataOptions extends ModuleConfig {
-	name: ModuleName;
+export default interface MetadataOptions extends ModuleOptions {
 	dateAfter?: Date;
 	dateBefore?: Date;
 }

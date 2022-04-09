@@ -1,12 +1,13 @@
 import { deserialize } from 'bson';
-import { ModuleConfig } from './moduleConfig';
+import { ModuleOptions } from './moduleOptions';
 
 export default class PictureRequest {
 	path: string;
-	moduleConfig: ModuleConfig[];
+	moduleOptions: ModuleOptions[];
+
 	constructor(buffer: Buffer) {
-		const { path, moduleConfig } = deserialize(buffer);
+		const { path, moduleOptions } = deserialize(buffer);
 		this.path = path;
-		this.moduleConfig = moduleConfig;
+		this.moduleOptions = moduleOptions;
 	}
 }

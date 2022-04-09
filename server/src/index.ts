@@ -1,8 +1,8 @@
-import { moduleManager, isModuleType } from './modules/modulesConfig';
+import { moduleManager, isModuleType } from './modules/moduleManager';
 
 const PORT = process.env.PORT || 8000;
 
-const nodeType = isModuleType(process.env.NODE_TYPE) ? process.env.NODE_TYPE : 'traverse';
+const nodeType = isModuleType(process.env.NODE_TYPE) ? process.env.NODE_TYPE : 'main';
 
 const app = moduleManager?.[nodeType];
 
