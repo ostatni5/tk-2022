@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { serialize } from 'bson';
-import express, { Request, Response, Application } from 'express';
-import { ModuleConfig } from '../classes/moduleConfig';
+import { Response } from 'express';
+import { ModuleOptions } from '../classes/moduleOptions';
 
 type Handler = (req: any, res: Response) => Promise<void>;
 type Resolver = (body: any) => Promise<string[] | Error>;
 type Serializer = (data: Object) => Object | Buffer;
-type PicturePromisePayload = { paths: string[]; options: ModuleConfig };
+type PicturePromisePayload = { paths: string[]; options: ModuleOptions };
 
 export const getHandler: (resolver: Resolver, serializer?: Serializer) => Handler =
 	(resolver, serializer = (data) => data) =>
@@ -34,7 +33,7 @@ async function picturePromise(route: string, payload: PicturePromisePayload): Pr
 }
 
 export const promiseReduce: (
-	configs: { route: string; options: ModuleConfig }[],
+	configs: { route: string; options: ModuleOptions }[],
 	pictures: string[],
 ) => Promise<string[]> = (configs, pictures) =>
 	configs.reduce(

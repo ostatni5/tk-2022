@@ -11,7 +11,10 @@
             createdAfter: "",
             createdBefore: ""
         },
-        // text: {}
+        // text: {
+        //     active: false,
+        //     ...
+        // }
     };
 
     let wrongPath = true;
@@ -61,7 +64,7 @@
                 autocomplete="on"
             />
         </label>
-        {#if wrongPath && formData.path !== ''}
+        {#if wrongPath && formData.path.length != 0}
             <p class="errorMessage">This is not a path</p>
         {/if}
     </div>

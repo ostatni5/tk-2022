@@ -9,7 +9,7 @@ const testCases = [
 	{
 		testRequest: {
 			path: `${rootPath}/server/resources/exampleImages`,
-			moduleConfig: [],
+			moduleOptions: [],
 		},
 		testResponse: {
 			pictures: [

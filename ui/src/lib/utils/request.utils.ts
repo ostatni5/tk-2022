@@ -2,7 +2,7 @@ import { serialize, deserialize } from 'bson';
 
 export interface ImagesRequest {
     path: string,
-    moduleConfig: {name: string}[]
+    moduleOptions: {name: string}[]
 };
 export interface ImagesResponse {
     pictures: string[]

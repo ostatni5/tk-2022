@@ -2,7 +2,7 @@ import express, { Application } from 'express';
 import PictureRequest from '../../classes/pictureRequest';
 import bodyParser from 'body-parser';
 import { directoryImagesGenerator } from './filesFinder';
-import { ModuleConfig, ModuleRoutes } from '../../classes/moduleConfig';
+import { ModuleOptions, ModuleRoutes } from '../../classes/moduleOptions';
 import { getHandler, promiseReduce } from '../../utils/request.utils';
 import { serialize } from 'bson';
 import cors from 'cors';
@@ -37,30 +37,25 @@ async function handleRequest(payload: Buffer): Promise<string[]> {
 	let picture = pictureGenerator.next();
 
 	while (!picture.done) {
-		for(let i=0; i < BUFFER_SIZE; i++){
-			if(picture.done)
-				break;
+		for(let i=0; i < BUFFER_SIZE && !picture.done; i++){
 			pictureBuffer.push(picture.value);
 			picture = pictureGenerator.next();
 		}
 
-		picturePromises.push(fetcher(request.moduleConfig, new Array(...pictureBuffer)));
+		picturePromises.push(fetcher(request.moduleOptions, new Array(...pictureBuffer)));
 		pictureBuffer = [];
-
-		if(picture.done)
-			break;
 	}
 
 	return (await Promise.all(picturePromises)).flat();
 }
 
 // reduce to one promise
-const fetcher = (configs: ModuleConfig[], pictures: string[]) =>
+const fetcher = (moduleOptions: ModuleOptions[], pictures: string[]) =>
 	promiseReduce(
-		configs.map((config) => {
+		moduleOptions.map((options) => {
 			return {
-				route: ModuleRoutes[config.name],
-				options: config,
+				route: ModuleRoutes[options.name],
+				options,
 			};
 		}),
 		pictures,

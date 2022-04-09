@@ -11,11 +11,11 @@
     const createRequest = (formData): ImagesRequest => {
         const request = {
             path: formData.path,
-            moduleConfig: []
+            moduleOptions: []
         };
 
         if(formData.metadata.active){
-            request.moduleConfig.push({
+            request.moduleOptions.push({
                 name: "metadata",
                 dateAfter: formData.metadata.createdAfter ?
                     new Date(formData.metadata.createdAfter) : undefined,

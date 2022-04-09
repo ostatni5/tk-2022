@@ -1,4 +1,4 @@
-export interface ModuleConfig {
+export interface ModuleOptions {
 	name: ModuleName;
 }
 
