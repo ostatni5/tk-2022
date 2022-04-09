@@ -10,18 +10,27 @@ export function* directoryFilesGenerator(baseFolder: string, recursive: boolean 
     catch{
         return;
     }
-    const absoluteFiles: string[] = currDirFiles.map((file: string) => path.join(baseFolder, file));
+    const absolutePaths: string[] = currDirFiles.map((file: string) => path.join(baseFolder, file));
 
-    const regularFiles: string[] = absoluteFiles.filter((file: string) => fs.existsSync(file) && fs.statSync(file).isFile());
-    for (const file of regularFiles){
-        yield file.split('\\').join('/');
+    const directoryPaths: string[] = [];
+    for(const file of absolutePaths){
+        try{
+            const stat: fs.Stats = fs.statSync(file);
+            if(stat?.isFile()){
+                yield file.split('\\').join('/');
+            }
+            else if(stat?.isDirectory()){
+                directoryPaths.push(file);
+            }
+        }
+        catch{
+            continue;
+        }
     }
 
     if (recursive){
-        for (const file of absoluteFiles){
-            if (fs.existsSync(file) && fs.statSync(file).isDirectory()){
-                yield* directoryFilesGenerator(file, recursive);
-            }
+        for (const dir of directoryPaths){
+            yield* directoryFilesGenerator(dir, recursive);
         }
     }
 }
