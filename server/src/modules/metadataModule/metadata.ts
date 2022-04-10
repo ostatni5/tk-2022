@@ -30,8 +30,6 @@ async function filterMetadata(path: string, options: MetadataOptions): Promise<b
 
 	const imgData: any = await getImageExif(path);
 
-	console.log(path, [imgData.exif.ExifImageHeight].flat()[0])
-
 	// Here we add filters as guards
 	const dateCreated = imgData.exif?.CreateDate ? parseExifDate(imgData.exif.CreateDate) : null;
 	const dateAfter = options?.dateAfter ? new Date(options.dateAfter) : null;

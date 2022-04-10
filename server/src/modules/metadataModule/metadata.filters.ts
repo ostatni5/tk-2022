@@ -1,8 +1,7 @@
-import { parseExifDate } from '../../utils/metadata.utils';
-import MetadataOptions from './metadataOptions';
+export function filterRange(value?: number | Date | null, filterFrom?: number | Date | null, filterTo?: number | Date | null): boolean{
+    if (filterFrom == null && filterTo == null) return true;
 
-export function filterRange(value?: any, filterFrom?: any, filterTo?: any): boolean{
-    if ((filterFrom != null || filterTo != null) && value == null) return false;
+    if ( value == null) return false;
 
     if (filterFrom != null && value < filterFrom) return false;
 
@@ -11,7 +10,7 @@ export function filterRange(value?: any, filterFrom?: any, filterTo?: any): bool
     return true;
 }
 
-export function filterValue(value?: any, filterOption?: any): boolean{
+export function filterValue(value?: string | number, filterOption?: string | number): boolean{
     if(filterOption == null) return true;
     
     if(value == null) return false;
