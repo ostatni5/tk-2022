@@ -3,6 +3,7 @@ import express, { Application } from 'express';
 import { asyncFilter } from '../../utils/async.utils';
 import { getImageExif, parseExifDate } from '../../utils/metadata.utils';
 import { getHandler } from '../../utils/request.utils';
+import { filterRange, filterValue, } from './metadata.filters';
 import MetadataOptions from './metadataOptions';
 import MetadataRequest from './metadataRequest';
 
@@ -27,29 +28,26 @@ async function filterMetadata(path: string, options: MetadataOptions): Promise<b
 		return false;
 	}
 
-	const imgData = await getImageExif(path);
+	const imgData: any = await getImageExif(path);
 
 	// Here we add filters as guards
-	return filterDate(imgData, options);
-}
+	const dateCreated = imgData.exif?.CreateDate ? parseExifDate(imgData.exif.CreateDate) : null;
+	const dateAfter = options?.dateAfter ? new Date(options.dateAfter) : null;
+	const dateBefore = options?.dateBefore ? new Date(options.dateBefore) : null;
 
-function filterDate(imgData: any, options: MetadataOptions): boolean {
-	if (!('CreateDate' in imgData.exif)) {
-		return false;
-	}
-	const dateCreated = parseExifDate(imgData.exif.CreateDate);
+	if (!filterRange(dateCreated, dateAfter, dateBefore)) return false;
 
-	if (
-		options.dateAfter !== undefined &&
-		dateCreated.getTime() < new Date(options.dateAfter).getTime()
-	)
-		return false;
+	if (!filterValue(imgData.exif.ExposureTime, options.exposureTime)) return false;
 
-	if (
-		options.dateBefore !== undefined &&
-		dateCreated.getTime() > new Date(options.dateBefore).getTime()
-	)
-		return false;
+	if (!filterValue(imgData.exif.FNumber, options.fNumber)) return false;
+	
+	if (!filterValue(imgData.exif.FocalLength, options.focalLength)) return false;
+
+	if (!filterValue(imgData.exif.Flash, options.flash)) return false;
+
+	if (!filterRange([imgData.exif.ExifImageWidth].flat()[0], options.pixelXDimMin, options.pixelXDimMax)) return false;
+
+	if (!filterRange([imgData.exif.ExifImageHeight].flat()[0], options.pixelYDimMin, options.pixelYDimMax)) return false;
 
 	return true;
 }
