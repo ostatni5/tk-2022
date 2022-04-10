@@ -1,18 +1,5 @@
 <script lang="ts">
     import SvelteTable from 'svelte-table/src/index';
-    import { afterUpdate } from 'svelte';
-    import Gallery from 'svelte-gallery';
-
-    const images = [
-        { src: 'https://source.unsplash.com/random' },
-        { src: 'https://source.unsplash.com/random'},
-        { src: 'https://source.unsplash.com/random'},
-        { src: 'https://source.unsplash.com/random'},
-        { src: 'https://source.unsplash.com/random' },
-        { src: 'https://source.unsplash.com/random'},
-        { src: 'https://source.unsplash.com/random'},
-        { src: 'https://source.unsplash.com/random'}
-    ];
 
     export let data: {url: string}[] = [];
 
@@ -20,13 +7,11 @@
     let search: string = '';
     let hiddenColumns = [];
 
+    $: updateTable(data);
     $: visibleRows = [];
     $: visibleColumns = [];
 
-    // maybe change after update to $
-    // $: func(data);
-
-    afterUpdate(() => {
+    const updateTable = (data) => {
         columns = [];
         if (data.length > 0) {
             const prepareColumns = {};
@@ -71,7 +56,7 @@
             : data;
 
         visibleColumns = columns.filter((el) => !hiddenColumns.includes(el.key));
-    })
+    }
 
 </script>
 
@@ -86,7 +71,4 @@
     {/each}
 </div>
 
-
 <SvelteTable columns={visibleColumns} rows={visibleRows} />
-
-<Gallery {images}  rowHeight={220}/>

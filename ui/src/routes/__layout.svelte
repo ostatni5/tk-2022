@@ -1,6 +1,6 @@
 <script lang="ts">
-    import Header from '$lib/Header.svelte';
-    import ImageFinder from '$lib/ImageFinder.svelte';
+    import Header from '$lib/components/Header.svelte';
+    import ImageFinder from '$lib/components/ImageFinder.svelte';
     import '../app.css';
 </script>
 
