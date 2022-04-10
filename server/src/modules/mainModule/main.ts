@@ -2,13 +2,14 @@ import express, { Application } from 'express';
 import PictureRequest from '../../classes/pictureRequest';
 import bodyParser from 'body-parser';
 import { directoryImagesGenerator } from './filesFinder';
-import { ModuleConfig, ModuleRoutes } from '../../classes/moduleConfig';
+import { ModuleOptions, ModuleRoutes } from '../../classes/moduleOptions';
 import { getHandler, promiseReduce } from '../../utils/request.utils';
 import { serialize } from 'bson';
+import cors from 'cors';
 
 const BUFFER_SIZE = 10;
 
-const traverseModule: Application = express();
+const mainModule: Application = express();
 
 const options = {
 	//default options
@@ -17,9 +18,13 @@ const options = {
 	type: 'application/octet-stream',
 };
 
-traverseModule.use(bodyParser.raw(options));
+mainModule.use(bodyParser.raw(options));
 
-traverseModule.post('/', getHandler(handleRequest, serialize));
+mainModule.use(cors({
+	origin: 'http://localhost:3000'
+}));
+
+mainModule.post('/', getHandler(handleRequest, serialize));
 
 async function handleRequest(payload: Buffer): Promise<string[]> {
 	const request = new PictureRequest(payload);
@@ -32,33 +37,28 @@ async function handleRequest(payload: Buffer): Promise<string[]> {
 	let picture = pictureGenerator.next();
 
 	while (!picture.done) {
-		pictureBuffer.push(picture.value);
-
-		if (pictureBuffer.length >= BUFFER_SIZE) {
-			picturePromises.push(fetcher(request.moduleConfig, new Array(...pictureBuffer)));
-			pictureBuffer = [];
+		for(let i=0; i < BUFFER_SIZE && !picture.done; i++){
+			pictureBuffer.push(picture.value);
+			picture = pictureGenerator.next();
 		}
 
-		picture = pictureGenerator.next();
+		picturePromises.push(fetcher(request.moduleOptions, new Array(...pictureBuffer)));
+		pictureBuffer = [];
 	}
 
 	return (await Promise.all(picturePromises)).flat();
 }
 
 // reduce to one promise
-const fetcher = (configs: ModuleConfig[], pictures: string[]) =>
+const fetcher = (moduleOptions: ModuleOptions[], pictures: string[]) =>
 	promiseReduce(
-		configs.map((config) => {
+		moduleOptions.map((options) => {
 			return {
-				route: getRouteForConfig(config),
-				config: config,
+				route: ModuleRoutes[options.name],
+				options,
 			};
 		}),
 		pictures,
 	);
 
-function getRouteForConfig(config: ModuleConfig): string {
-	return ModuleRoutes[config.name];
-}
-
-export default traverseModule;
+export default mainModule;

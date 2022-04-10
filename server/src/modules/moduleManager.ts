@@ -1,11 +1,11 @@
-import traverse from './traverseModule/traverse';
+import main from './mainModule/main';
 import example from './exampleModule/example';
 import metadata from './metadataModule/metadata';
 
 export type ModuleType = keyof typeof moduleManager;
 
 export const moduleManager = {
-	traverse,
+	main,
 	example,
 	metadata,
 } as const;

@@ -22,10 +22,10 @@
 	"scripts": {
 		"test": "jest --detectOpenHandles --verbose false",
 		"clear": "jest --clearCache",
-		"start": "concurrently --kill-others \"npm run example\" \"npm run traverse\" \"npm run metadata\"",
+		"start": "concurrently --kill-others \"npm run main\" \"npm run metadata\"",
 		"dev": "ts-node-dev --respawn ./src/index.ts",
 		"example": "cross-env NODE_TYPE=example PORT=8081 ts-node ./src/index.ts",
-		"traverse": "cross-env NODE_TYPE=traverse PORT=8082 ts-node ./src/index.ts",
+		"main": "cross-env NODE_TYPE=main PORT=8082 ts-node ./src/index.ts",
 		"metadata": "cross-env NODE_TYPE=metadata PORT=8083 ts-node ./src/index.ts"
 	},
 	"repository": {
