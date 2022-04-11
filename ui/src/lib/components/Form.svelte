@@ -4,14 +4,21 @@
 
     export let searching = false;
 
-    let formData = {
+    const formData = {
         path: '',
         metadata: {
             active: false,
             createdAfter: "",
             createdBefore: ""
         },
-        // text: {
+        text: {
+            active: false,
+            hasText: false,
+            maxLength: "2000",
+            minLength: "0",
+            containsText: "",
+        },
+        // weather: {
         //     active: false,
         //     ...
         // }
@@ -33,21 +40,52 @@
         wrongPath = !isPath((e.target as HTMLInputElement).value);
     };
 
-    const handleMetadataClick = () => {
-        arrowDirection = arrowDirection === 'down' ? 'up' : 'down';
-        metadataVisible = !metadataVisible;
-    };
+    const handleClick = (module: string) => () =>{
+        if(moduleUis[module].visible){
+            moduleUis[module].arrowDirection = 'down';
+            moduleUis[module].visible = false;
+        }else{
+            moduleUis[module].arrowDirection = 'up';
+            moduleUis[module].visible = true;
+        }
+    }
 
     const changeDate = (e: Event) => {
         let input = e.target as HTMLInputElement;
         input.style.color = input.value !== '' ? 'black' : '';
     };
 
+    const changeRange = (e: Event) => {
+        let input = e.target as HTMLInputElement;
+        if(parseInt(formData.text.maxLength) < parseInt(formData.text.minLength)) 
+            if(input.name === 'minLength'){
+                formData.text.minLength = formData.text.maxLength;
+                input.value = formData.text.minLength;
+            }else{
+                formData.text.maxLength = formData.text.minLength;
+                input.value = formData.text.maxLength;
+            }
+};
 
     const handleSubmit = () => {
         if (isPath(formData.path)) {
             dispatch('search', formData);
         }
+    }
+
+    const moduleUis = {
+        metadata:{
+            arrowDirection: 'down',
+            visible: false,
+        },
+        text:{
+            arrowDirection: 'down',
+            visible: false,
+        },
+        // weather:{
+        //     arrowDirection: 'down',
+        //     visible: false,
+        // }
     }
 
 </script>
@@ -69,25 +107,25 @@
         {/if}
     </div>
     <div class="inputContainer">
-        <p class="inputContainerTitle" on:click={handleMetadataClick}>
-            <input type="checkbox" bind:checked={formData.metadata.active} on:click|stopPropagation/>
+        <p class="inputContainerTitle" on:click={handleClick("metadata")}>
+            <input type="checkbox" bind:checked={formData["metadata"].active} on:click|stopPropagation/>
             Metadata <i class="arrow {arrowDirection}" />
         </p>
-        {#if metadataVisible}
+        {#if moduleUis["metadata"].visible}
             <div class="moduleForm" transition:slide>
                 <!-- <label
                     >Author
-                    <input type="text" bind:value={formData.metadata.author} placeholder="John Smith" />
+                    <input type="text" bind:value={formData["metadata"].author} placeholder="John Smith" />
                 </label>
                 <label
                     >Extension
-                    <input type="text" bind:value={formData.metadata.extension} placeholder="png" />
+                    <input type="text" bind:value={formData["metadata"].extension} placeholder="png" />
                 </label> -->
                 <label
                     >Created after
                     <input
                         type="date"
-                        bind:value={formData.metadata.createdAfter}
+                        bind:value={formData["metadata"].createdAfter}
                         on:change={changeDate}
                     />
                 </label>
@@ -95,10 +133,59 @@
                     >Created before
                     <input
                         type="date"
-                        bind:value={formData.metadata.createdBefore}
+                        bind:value={formData["metadata"].createdBefore}
                         on:change={changeDate}
                     />
                 </label>
+            </div>
+        {/if}
+    </div>
+    <div class="inputContainer">
+        <p class="inputContainerTitle" on:click={handleClick("text")}>
+            <input type="checkbox" bind:checked={formData["text"].active} on:click|stopPropagation/>
+            Tetadata <i class="arrow {arrowDirection}" />
+        </p>
+        {#if moduleUis["text"].visible}
+            <div class="moduleForm" transition:slide>
+                <label
+                    >Has Text
+                    <input
+                        type="checkbox"
+                        bind:checked={formData["text"].hasText}
+                    />
+                </label>
+                {#if formData["text"].hasText}
+                <label
+                    >Max text length
+                    <input
+                        type="range"
+                        name="maxLength"
+                        bind:value={formData["text"].maxLength}
+                        on:change={changeRange}
+                        min="0"
+                        max="2000"
+                    /> {formData["text"].maxLength}
+                </label>
+                <label
+                    >Min text length
+                    <input
+                        type="range"
+                        name="minLength"
+                        bind:value={formData["text"].minLength}
+                        on:change={changeRange}
+                        min="0"
+                        max="2000"
+                    /> {formData["text"].minLength}
+                </label>
+                <label
+                    >Contains text
+                    <input
+                        type="text"
+                        bind:value={formData["text"].containsText}
+                        placeholder="text"
+                    />
+                </label>
+                {/if}
             </div>
         {/if}
     </div>
@@ -182,13 +269,19 @@
         margin: 0;
         font-weight: bold;
         color: black;
+        -webkit-touch-callout: none;
+          -webkit-user-select: none;
+           -khtml-user-select: none;
+             -moz-user-select: none;
+              -ms-user-select: none;
+                  user-select: none;
     }
     .moduleForm {
         label {
             flex: 0 1 45%;
         }
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         flex-wrap: wrap;
     }
 

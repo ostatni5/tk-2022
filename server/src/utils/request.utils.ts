@@ -14,12 +14,13 @@ export const getHandler: (resolver: Resolver, serializer?: Serializer) => Handle
 			const data = { pictures: await resolver(req.body) };
 			res.status(200).send(serializer(data));
 		} catch (err) {
-			console.log(err);
+			console.log('DUPA');
 			res.status(500).send(err);
 		}
 	};
 
 async function picturePromise(route: string, payload: PicturePromisePayload): Promise<string[]> {
+	console.log(payload, route);
 	const res = await axios.post(route, JSON.stringify(payload), {
 		headers: { 'Content-Type': 'application/json' },
 	});
