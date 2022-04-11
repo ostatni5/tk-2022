@@ -27,7 +27,7 @@
                 }
             }
 
-            prepareColumns['url'].renderValue = (v) => `<img src='http://127.0.0.1:8082/image/${v.url}' width=100 height=80 loading="lazy" >`;
+            prepareColumns['url'].renderValue = (v) => `<img src='http://127.0.0.1:8082/image/${v.url}' style="object-fit: contain" width=120 height=100 loading="lazy" >`;
             prepareColumns['url'].title = 'IMAGE';
 
             for (const key in prepareColumns) {
