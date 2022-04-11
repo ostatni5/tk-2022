@@ -27,7 +27,7 @@ defmodule TextServerTest do
 
     resp = Poison.decode!(conn.resp_body)
 
-    assert Enum.sort(expected) == Enum.sort(resp["paths"])
+    assert Enum.sort(expected) == Enum.sort(resp["pictures"])
   end
 
   test "has text" do

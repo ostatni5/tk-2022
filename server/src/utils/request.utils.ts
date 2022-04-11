@@ -14,7 +14,7 @@ export const getHandler: (resolver: Resolver, serializer?: Serializer) => Handle
 			const data = { pictures: await resolver(req.body) };
 			res.status(200).send(serializer(data));
 		} catch (err) {
-			console.log('DUPA');
+			console.log(err);
 			res.status(500).send(err);
 		}
 	};

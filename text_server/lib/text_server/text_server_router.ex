@@ -18,7 +18,7 @@ defmodule TextServer.Router do
 
     pathsFiltered = Ocr.filterPaths(paths, options)
 
-    send_resp(conn, 200, Poison.encode!(%{paths: pathsFiltered}))
+    send_resp(conn, 200, Poison.encode!(%{pictures: pathsFiltered}))
   end
 
   # "Default" route that will get called when no other route is matched
