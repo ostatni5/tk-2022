@@ -6,6 +6,7 @@ import { ModuleOptions, ModuleRoutes } from '../../classes/moduleOptions';
 import { getHandler, promiseReduce } from '../../utils/request.utils';
 import { serialize } from 'bson';
 import cors from 'cors';
+import fs from 'fs';
 
 const BUFFER_SIZE = 10;
 
@@ -24,7 +25,14 @@ mainModule.use(cors({
 	origin: 'http://localhost:3000'
 }));
 
+
 mainModule.post('/', getHandler(handleRequest, serialize));
+
+mainModule.get('/image/*', (req, res) => {
+	const imageURL = decodeURI(req.url.replace('/image/', ''));
+	const img = fs.readFileSync(imageURL);
+	res.status(200).end(img, 'binary');
+});
 
 async function handleRequest(payload: Buffer): Promise<string[]> {
 	const request = new PictureRequest(payload);
@@ -37,7 +45,7 @@ async function handleRequest(payload: Buffer): Promise<string[]> {
 	let picture = pictureGenerator.next();
 
 	while (!picture.done) {
-		for(let i=0; i < BUFFER_SIZE && !picture.done; i++){
+		for (let i = 0; i < BUFFER_SIZE && !picture.done; i++) {
 			pictureBuffer.push(picture.value);
 			picture = pictureGenerator.next();
 		}
