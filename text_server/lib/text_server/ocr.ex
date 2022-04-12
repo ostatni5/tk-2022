@@ -51,9 +51,12 @@ defmodule Ocr do
 
       "maxLength" ->
         &maxLength(param, &1)
+      
+      "name" ->
+        &pass/1
 
       _ ->
-        IO.puts("Unknown function name #{name}")
+        IO.warn("Unknown function name #{name}")
         &pass/1
     end
   end

@@ -23,6 +23,17 @@
                     new Date(formData.metadata.createdBefore) : undefined
             });
         };
+        if(formData.text.active){
+            request.moduleOptions.push({
+                name: "text",
+                hasText: formData.text.hasText,
+                ...formData.text.hasText ? {
+                    maxLength: parseInt(formData.text.maxLength),
+                    minLength: parseInt(formData.text.minLength),
+                    containsText: formData.text.containsText
+                } : {}
+            });
+        };
 
         return request;
     }
@@ -40,8 +51,8 @@
                 created: new Date().toLocaleString()
             })
         }
-        results = items;
         searching = false;
+        results = items;
     }
 
     const handleSearch = (e: CustomEvent) => {

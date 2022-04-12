@@ -20,6 +20,7 @@ export const getHandler: (resolver: Resolver, serializer?: Serializer) => Handle
 	};
 
 async function picturePromise(route: string, payload: PicturePromisePayload): Promise<string[]> {
+	console.log(payload, route);
 	const res = await axios.post(route, JSON.stringify(payload), {
 		headers: { 'Content-Type': 'application/json' },
 	});
