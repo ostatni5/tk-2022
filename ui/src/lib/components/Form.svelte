@@ -25,7 +25,6 @@
     };
 
     let wrongPath = true;
-    let arrowDirection = 'down';
     let metadataVisible = false;
 
     const dispatch = createEventDispatcher();
@@ -109,7 +108,7 @@
     <div class="inputContainer">
         <p class="inputContainerTitle" on:click={handleClick("metadata")}>
             <input type="checkbox" bind:checked={formData["metadata"].active} on:click|stopPropagation/>
-            Metadata <i class="arrow {arrowDirection}" />
+            Metadata <i class="arrow {moduleUis["metadata"].arrowDirection}" />
         </p>
         {#if moduleUis["metadata"].visible}
             <div class="moduleForm" transition:slide>
@@ -143,7 +142,7 @@
     <div class="inputContainer">
         <p class="inputContainerTitle" on:click={handleClick("text")}>
             <input type="checkbox" bind:checked={formData["text"].active} on:click|stopPropagation/>
-            Text content <i class="arrow {arrowDirection}" />
+            Text content <i class="arrow {moduleUis["text"].arrowDirection}" />
         </p>
         {#if moduleUis["text"].visible}
             <div class="moduleForm" transition:slide>
