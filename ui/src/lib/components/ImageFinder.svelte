@@ -51,8 +51,8 @@
                 created: new Date().toLocaleString()
             })
         }
-        results = items;
         searching = false;
+        results = items;
     }
 
     const handleSearch = (e: CustomEvent) => {

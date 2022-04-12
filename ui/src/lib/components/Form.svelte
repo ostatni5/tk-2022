@@ -143,7 +143,7 @@
     <div class="inputContainer">
         <p class="inputContainerTitle" on:click={handleClick("text")}>
             <input type="checkbox" bind:checked={formData["text"].active} on:click|stopPropagation/>
-            Tetadata <i class="arrow {arrowDirection}" />
+            Text content <i class="arrow {arrowDirection}" />
         </p>
         {#if moduleUis["text"].visible}
             <div class="moduleForm" transition:slide>
@@ -154,19 +154,18 @@
                         bind:checked={formData["text"].hasText}
                     />
                 </label>
-                {#if formData["text"].hasText}
                 <label
-                    >Max text length
+                class="span2col"
+                    >Contains text
                     <input
-                        type="range"
-                        name="maxLength"
-                        bind:value={formData["text"].maxLength}
-                        on:change={changeRange}
-                        min="0"
-                        max="2000"
-                    /> {formData["text"].maxLength}
+                        type="text"
+                        bind:value={formData["text"].containsText}
+                        placeholder="text"
+                        disabled={!formData["text"].hasText}
+                    />
                 </label>
                 <label
+                class="range"
                     >Min text length
                     <input
                         type="range"
@@ -175,17 +174,22 @@
                         on:change={changeRange}
                         min="0"
                         max="2000"
-                    /> {formData["text"].minLength}
+                        disabled={!formData["text"].hasText}
+                    /> <span class="label">{formData["text"].minLength}</span>
                 </label>
                 <label
-                    >Contains text
+                        class="range"
+                    >Max text length
                     <input
-                        type="text"
-                        bind:value={formData["text"].containsText}
-                        placeholder="text"
-                    />
+                        type="range"
+                        name="maxLength"
+                        bind:value={formData["text"].maxLength}
+                        on:change={changeRange}
+                        min="0"
+                        max="2000"
+                        disabled={!formData["text"].hasText}
+                    /> <span class="label">{formData["text"].maxLength}</span>
                 </label>
-                {/if}
             </div>
         {/if}
     </div>
@@ -280,9 +284,25 @@
         label {
             flex: 0 1 45%;
         }
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: .5rem 2rem ;
+    }
+    .moduleForm .range {
+        max-width: fit-content;
+        margin-inline: auto;
+    }
+    .range input {    
+        transform: translateY(2px);
+    }
+
+    .range .label {
+        position: absolute;
+        transform: translatey(4px);
+        font-size: 0.8rem;
+    }
+    .span2col {
+        grid-column: span 2;
     }
 
     .arrow {
