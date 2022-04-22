@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte'
+    import { createEventDispatcher } from 'svelte';
     import { slide } from 'svelte/transition';
 
     export let searching = false;
@@ -8,15 +8,15 @@
         path: '',
         metadata: {
             active: false,
-            createdAfter: "",
-            createdBefore: ""
+            createdAfter: '',
+            createdBefore: '',
         },
         text: {
             active: false,
             hasText: false,
-            maxLength: "2000",
-            minLength: "0",
-            containsText: "",
+            maxLength: '2000',
+            minLength: '0',
+            containsText: '',
         },
         // weather: {
         //     active: false,
@@ -40,15 +40,15 @@
         wrongPath = !isPath((e.target as HTMLInputElement).value);
     };
 
-    const handleClick = (module: string) => () =>{
-        if(moduleUis[module].visible){
+    const handleClick = (module: string) => () => {
+        if (moduleUis[module].visible) {
             moduleUis[module].arrowDirection = 'down';
             moduleUis[module].visible = false;
-        }else{
+        } else {
             moduleUis[module].arrowDirection = 'up';
             moduleUis[module].visible = true;
         }
-    }
+    };
 
     const changeDate = (e: Event) => {
         let input = e.target as HTMLInputElement;
@@ -57,28 +57,28 @@
 
     const changeRange = (e: Event) => {
         let input = e.target as HTMLInputElement;
-        if(parseInt(formData.text.maxLength) < parseInt(formData.text.minLength)) 
-            if(input.name === 'minLength'){
+        if (parseInt(formData.text.maxLength) < parseInt(formData.text.minLength))
+            if (input.name === 'minLength') {
                 formData.text.minLength = formData.text.maxLength;
                 input.value = formData.text.minLength;
-            }else{
+            } else {
                 formData.text.maxLength = formData.text.minLength;
                 input.value = formData.text.maxLength;
             }
-};
+    };
 
     const handleSubmit = () => {
         if (isPath(formData.path)) {
             dispatch('search', formData);
         }
-    }
+    };
 
     const moduleUis = {
-        metadata:{
+        metadata: {
             arrowDirection: 'down',
             visible: false,
         },
-        text:{
+        text: {
             arrowDirection: 'down',
             visible: false,
         },
@@ -86,8 +86,7 @@
         //     arrowDirection: 'down',
         //     visible: false,
         // }
-    }
-
+    };
 </script>
 
 <form on:submit|preventDefault={handleSubmit} autocomplete="off">
@@ -107,11 +106,15 @@
         {/if}
     </div>
     <div class="inputContainer">
-        <p class="inputContainerTitle" on:click={handleClick("metadata")}>
-            <input type="checkbox" bind:checked={formData["metadata"].active} on:click|stopPropagation/>
+        <p class="inputContainerTitle" on:click={handleClick('metadata')}>
+            <input
+                type="checkbox"
+                bind:checked={formData['metadata'].active}
+                on:click|stopPropagation
+            />
             Metadata <i class="arrow {arrowDirection}" />
         </p>
-        {#if moduleUis["metadata"].visible}
+        {#if moduleUis['metadata'].visible}
             <div class="moduleForm" transition:slide>
                 <!-- <label
                     >Author
@@ -125,7 +128,7 @@
                     >Created after
                     <input
                         type="date"
-                        bind:value={formData["metadata"].createdAfter}
+                        bind:value={formData['metadata'].createdAfter}
                         on:change={changeDate}
                     />
                 </label>
@@ -133,7 +136,7 @@
                     >Created before
                     <input
                         type="date"
-                        bind:value={formData["metadata"].createdBefore}
+                        bind:value={formData['metadata'].createdBefore}
                         on:change={changeDate}
                     />
                 </label>
@@ -141,54 +144,52 @@
         {/if}
     </div>
     <div class="inputContainer">
-        <p class="inputContainerTitle" on:click={handleClick("text")}>
-            <input type="checkbox" bind:checked={formData["text"].active} on:click|stopPropagation/>
+        <p class="inputContainerTitle" on:click={handleClick('text')}>
+            <input
+                type="checkbox"
+                bind:checked={formData['text'].active}
+                on:click|stopPropagation
+            />
             Text content <i class="arrow {arrowDirection}" />
         </p>
-        {#if moduleUis["text"].visible}
+        {#if moduleUis['text'].visible}
             <div class="moduleForm" transition:slide>
                 <label
                     >Has Text
-                    <input
-                        type="checkbox"
-                        bind:checked={formData["text"].hasText}
-                    />
+                    <input type="checkbox" bind:checked={formData['text'].hasText} />
                 </label>
-                <label
-                class="span2col"
+                <label class="span2col"
                     >Contains text
                     <input
                         type="text"
-                        bind:value={formData["text"].containsText}
+                        bind:value={formData['text'].containsText}
                         placeholder="text"
-                        disabled={!formData["text"].hasText}
+                        disabled={!formData['text'].hasText}
                     />
                 </label>
-                <label
-                class="range"
+                <label class="range"
                     >Min text length
                     <input
                         type="range"
                         name="minLength"
-                        bind:value={formData["text"].minLength}
+                        bind:value={formData['text'].minLength}
                         on:change={changeRange}
                         min="0"
                         max="2000"
-                        disabled={!formData["text"].hasText}
-                    /> <span class="label">{formData["text"].minLength}</span>
+                        disabled={!formData['text'].hasText}
+                    /> <span class="label">{formData['text'].minLength}</span>
                 </label>
-                <label
-                        class="range"
+                <label class="range"
                     >Max text length
                     <input
                         type="range"
                         name="maxLength"
-                        bind:value={formData["text"].maxLength}
+                        bind:value={formData['text'].maxLength}
                         on:change={changeRange}
                         min="0"
                         max="2000"
-                        disabled={!formData["text"].hasText}
-                    /> <span class="label">{formData["text"].maxLength}</span>
+                        disabled={!formData['text'].hasText}
+                    /> <span class="label">{formData['text'].maxLength}</span>
                 </label>
             </div>
         {/if}
@@ -259,7 +260,7 @@
     }
 
     form {
-        width: 75%;
+        width: 100%;
         margin: 0 auto;
     }
 
@@ -274,11 +275,11 @@
         font-weight: bold;
         color: black;
         -webkit-touch-callout: none;
-          -webkit-user-select: none;
-           -khtml-user-select: none;
-             -moz-user-select: none;
-              -ms-user-select: none;
-                  user-select: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
     .moduleForm {
         label {
@@ -286,13 +287,13 @@
         }
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: .5rem 2rem ;
+        gap: 0.5rem 2rem;
     }
     .moduleForm .range {
         max-width: fit-content;
         margin-inline: auto;
     }
-    .range input {    
+    .range input {
         transform: translateY(2px);
     }
 
