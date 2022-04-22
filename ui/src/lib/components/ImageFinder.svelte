@@ -15,24 +15,30 @@
         };
 
         if(formData.metadata.active){
-            request.moduleOptions.push({
-                name: "metadata",
-                dateAfter: formData.metadata.createdAfter ?
-                    new Date(formData.metadata.createdAfter) : undefined,
-                dateBefore: formData.metadata.createdBefore ?
-                    new Date(formData.metadata.createdBefore) : undefined
-            });
+            let new_options:Record<string,any> = {};
+            new_options.name = "metadata";  
+            if(formData.metadata.createdAfter !== '') new_options.createdAfter = formData.metadata.createdAfter;
+            if(formData.metadata.createdBefore !== '') new_options.createdBefore = formData.metadata.createdBefore;
+            if(formData.metadata.flash !== '') new_options.flash = parseInt(formData.metadata.flash, 16);
+            if(formData.metadata.fNumber) new_options.fNumber = formData.metadata.fNumber;
+            if(formData.metadata.focalLength) new_options.focalLength = formData.metadata.focalLength;
+            if(formData.metadata.exposureTime !== '') new_options.exposureTime = parseInt(formData.metadata.exposureTime);
+            if(formData.metadata.pixelXDimMin !== '') new_options.pixelXDimMin = parseInt(formData.metadata.pixelXDimMin);
+            if(formData.metadata.pixelXDimMax !== '') new_options.pixelXDimMax = parseInt(formData.metadata.pixelXDimMax);
+            if(formData.metadata.pixelYDimMin !== '') new_options.pixelYDimMin = parseInt(formData.metadata.pixelYDimMin);
+            if(formData.metadata.pixelYDimMax !== '') new_options.pixelYDimMax = parseInt(formData.metadata.pixelYDimMax);
+
+            request.moduleOptions.push(new_options);
         };
         if(formData.text.active){
-            request.moduleOptions.push({
-                name: "text",
-                hasText: formData.text.hasText,
-                ...formData.text.hasText ? {
-                    maxLength: parseInt(formData.text.maxLength),
-                    minLength: parseInt(formData.text.minLength),
-                    containsText: formData.text.containsText
-                } : {}
-            });
+            let new_options:Record<string,any> = {};
+            new_options.name = "text";  
+            new_options.hasText = formData.text.hasText;
+            if(formData.text.maxLength !== '') new_options.maxLength = parseInt(formData.text.maxLength);
+            if(formData.text.minLength !== '') new_options.minLength = parseInt(formData.text.minLength);
+            
+
+            request.moduleOptions.push(new_options);
         };
 
         return request;

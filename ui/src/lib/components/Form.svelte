@@ -1,6 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
     import { slide } from 'svelte/transition';
+    import { flashOptions } from '../utils/flashOptions';
 
     export let searching = false;
 
@@ -10,12 +11,20 @@
             active: false,
             createdAfter: '',
             createdBefore: '',
+            flash: '',
+            fNumber: '',
+            focalLength: '',
+            exposureTime: '',
+            pixelXDimMin: '',
+            pixelXDimMax: '',
+            pixelYDimMin: '',
+            pixelYDimMax: '',
         },
         text: {
             active: false,
             hasText: false,
-            maxLength: '2000',
-            minLength: '0',
+            maxLength: '',
+            minLength: '',
             containsText: '',
         },
         // weather: {
@@ -25,7 +34,6 @@
     };
 
     let wrongPath = true;
-    let arrowDirection = 'down';
     let metadataVisible = false;
 
     const dispatch = createEventDispatcher();
@@ -112,18 +120,19 @@
                 bind:checked={formData['metadata'].active}
                 on:click|stopPropagation
             />
-            Metadata <i class="arrow {arrowDirection}" />
+            Metadata <i class="arrow {moduleUis['metadata'].arrowDirection}" />
         </p>
         {#if moduleUis['metadata'].visible}
             <div class="moduleForm" transition:slide>
-                <!-- <label
-                    >Author
-                    <input type="text" bind:value={formData["metadata"].author} placeholder="John Smith" />
+                <label class="span2col select"
+                    >Flash stats
+                    <select bind:value={formData['metadata'].flash}>
+                        <option value="">Any</option>
+                        {#each flashOptions as { value, name }}
+                            <option {value}>{name}</option>
+                        {/each}
+                    </select>
                 </label>
-                <label
-                    >Extension
-                    <input type="text" bind:value={formData["metadata"].extension} placeholder="png" />
-                </label> -->
                 <label
                     >Created after
                     <input
@@ -140,6 +149,72 @@
                         on:change={changeDate}
                     />
                 </label>
+                <div class="fit3col">
+                    <label
+                        >F-number
+                        <input
+                            type="number"
+                            name="fnumber"
+                            bind:value={formData['metadata'].fNumber}
+                            min="0"
+                            step="0.01"
+                        />
+                    </label>
+                    <label
+                        >Focal length
+                        <input
+                            type="number"
+                            name="focal"
+                            bind:value={formData['metadata'].focalLength}
+                            min="0"
+                        />
+                    </label>
+                    <label
+                        >Exposure time
+                        <input
+                            type="number"
+                            name="exposure"
+                            bind:value={formData['metadata'].exposureTime}
+                            step="0.0001"
+                        />
+                    </label>
+                </div>
+                <label
+                    >Minimal pixel count in X dimension
+                    <input
+                        type="number"
+                        name="minPixelX"
+                        bind:value={formData['metadata'].pixelXDimMin}
+                        min="0"
+                    />
+                </label>
+                <label
+                    >Maximal pixel count in X dimension
+                    <input
+                        type="number"
+                        name="maxPixelX"
+                        bind:value={formData['metadata'].pixelXDimMax}
+                        min="0"
+                    />
+                </label>
+                <label
+                    >Minimal pixel count in Y dimension
+                    <input
+                        type="number"
+                        name="minPixelY"
+                        bind:value={formData['metadata'].pixelYDimMin}
+                        min="0"
+                    />
+                </label>
+                <label
+                    >Maximal pixel count in Y dimension
+                    <input
+                        type="number"
+                        name="maxPixelY"
+                        bind:value={formData['metadata'].pixelYDimMax}
+                        min="0"
+                    />
+                </label>
             </div>
         {/if}
     </div>
@@ -150,7 +225,7 @@
                 bind:checked={formData['text'].active}
                 on:click|stopPropagation
             />
-            Text content <i class="arrow {arrowDirection}" />
+            Text content <i class="arrow {moduleUis['text'].arrowDirection}" />
         </p>
         {#if moduleUis['text'].visible}
             <div class="moduleForm" transition:slide>
@@ -170,26 +245,24 @@
                 <label class="range"
                     >Min text length
                     <input
-                        type="range"
+                        type="number"
                         name="minLength"
                         bind:value={formData['text'].minLength}
                         on:change={changeRange}
                         min="0"
-                        max="2000"
                         disabled={!formData['text'].hasText}
-                    /> <span class="label">{formData['text'].minLength}</span>
+                    />
                 </label>
                 <label class="range"
                     >Max text length
                     <input
-                        type="range"
+                        type="number"
                         name="maxLength"
                         bind:value={formData['text'].maxLength}
                         on:change={changeRange}
                         min="0"
-                        max="2000"
                         disabled={!formData['text'].hasText}
-                    /> <span class="label">{formData['text'].maxLength}</span>
+                    />
                 </label>
             </div>
         {/if}
@@ -208,7 +281,9 @@
     }
 
     input[type='text'],
-    input[type='date'] {
+    input[type='number'],
+    input[type='date'],
+    select {
         width: 100%;
         padding: 12px 20px;
         margin: 5px 0;
@@ -216,6 +291,14 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box;
+    }
+
+    .select {
+        display: flex;
+        align-items: center;
+        select {
+            flex-grow: 1;
+        }
     }
 
     input[type='date'] {
@@ -289,13 +372,9 @@
         grid-template-columns: 1fr 1fr;
         gap: 0.5rem 2rem;
     }
-    .moduleForm .range {
-        max-width: fit-content;
-        margin-inline: auto;
-    }
-    .range input {
-        transform: translateY(2px);
-    }
+    // .range input[type='range'] {
+    //     transform: translateY(2px);
+    // }
 
     .range .label {
         position: absolute;
@@ -304,6 +383,19 @@
     }
     .span2col {
         grid-column: span 2;
+        input[type='number'] {
+            width: 25%;
+            margin-right: 75%;
+        }
+    }
+    .fit3col {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 0.5rem 2rem;
+        input[type='number'] {
+            width: 100%;
+        }
     }
 
     .arrow {
