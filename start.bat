@@ -1,3 +1,4 @@
-start cmd.exe /k "npm run start -w=ui"
-start cmd.exe /k "npm run start -w=server"
-start cmd.exe /k "cd text_server && mix run --no-halt"
+start "ui" cmd.exe /k "npm run start -w=ui"
+start "server-main" cmd.exe /k "npm run main -w=server"
+start "server-metadata" cmd.exe /k "npm run metadata -w=server"
+start "server-text" cmd.exe /k "cd text_server && mix run --no-halt"
