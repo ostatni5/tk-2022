@@ -1,74 +1,168 @@
 <script lang="ts">
-    import SvelteTable from 'svelte-table/src/index';
-
-    export let data: {url: string}[] = [];
-
-    let columns = [];
+    export let data: { url: string }[] = [];
     let search: string = '';
-    let hiddenColumns = [];
+    let copyMsg = 'Click to copy path!';
 
     $: updateTable(data);
-    $: visibleRows = [];
-    $: visibleColumns = [];
+    $: visibleResults = [];
 
     const updateTable = (data) => {
-        columns = [];
-        if (data.length > 0) {
-            const prepareColumns = {};
-            const object = data[0];
-            for (const key in object) {
-                if (Object.prototype.hasOwnProperty.call(object, key)) {
-                    prepareColumns[key] = {
-                        key: key,
-                        title: key.toLocaleUpperCase(),
-                        value: (v) => v[key],
-                        sortable: true
-                    };
-                }
-            }
-
-            prepareColumns['url'].renderValue = (v) => `<img src='http://127.0.0.1:8082/image/${v.url}' style="object-fit: contain" width=120 height=100 loading="lazy" >`;
-            prepareColumns['url'].title = 'IMAGE';
-
-            for (const key in prepareColumns) {
-                columns.push(prepareColumns[key]);
-            }
-        }
-
-        const excludeColumns = ['url'];
-
-        visibleRows = search
+        visibleResults = search
             ? data.filter((el) => {
-                for (const key in el) {
-                    if (excludeColumns.includes(key)) continue;
-
-                    if (Object.prototype.hasOwnProperty.call(el, key)) {
-                        const element: string | number = el[key];
-                        const include = element
-                            .toString()
-                            .toLowerCase()
-                            .includes(search.toLowerCase());
-                        if (include) return true;
-                    }
-                }
-                return false;
-            })
+                  for (const key in el) {
+                      if (Object.prototype.hasOwnProperty.call(el, key)) {
+                          const element: string | number = el[key];
+                          const include = element
+                              .toString()
+                              .toLowerCase()
+                              .includes(search.toLowerCase());
+                          if (include) return true;
+                      }
+                  }
+                  return false;
+              })
             : data;
+    };
 
-        visibleColumns = columns.filter((el) => !hiddenColumns.includes(el.key));
+    function handleClick(url) {
+        copyMsg = 'Copied!';
+        setTimeout(resetCopyMsg, 500);
+        window.navigator.clipboard.writeText(url);
     }
 
+    function resetCopyMsg() {
+        copyMsg = 'Click to copy path!';
+    }
 </script>
 
-<label>Search in results: <input bind:value={search} /></label>
-<div>
-    <p>Hide columns</p>
-    {#each columns as column}
+{#if data.length > 0}
+    <div class="search-bar">
         <label>
-            <input type="checkbox" bind:group={hiddenColumns} value={column.key} />
-            {column.key}
+            Search in results:
+            <input
+                type="text"
+                placeholder="pattern"
+                bind:value={search}
+                on:change={() => updateTable(data)}
+            />
         </label>
+    </div>
+{/if}
+<div class="gallery">
+    {#each visibleResults as result}
+        <div
+            class="img-wrapper tooltip"
+            data-tooltip={copyMsg}
+            on:click={() => handleClick(result.url)}
+            on:mouseenter={() => resetCopyMsg()}
+        >
+            <img src="http://127.0.0.1:8082/image/{result.url}" />
+            <div>
+                <h2>{result.url}</h2>
+            </div>
+        </div>
     {/each}
+    <div />
 </div>
 
-<SvelteTable columns={visibleColumns} rows={visibleRows} />
+<style lang="scss">
+    .search-bar {
+        width: 100%;
+        height: 2em;
+        display: flex;
+        align-items: center;
+        padding: 1em 0.2em;
+
+        * {
+            font-size: large;
+        }
+
+        label {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            align-content: space-between;
+            gap: 0.4em;
+        }
+
+        input {
+            flex-grow: 1;
+            padding: 5px 7px;
+        }
+    }
+
+    .gallery {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .img-wrapper {
+        height: 27vh;
+        flex-grow: 1;
+        padding: 4px;
+        padding-bottom: 0;
+        margin: 3px;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--tertiary-color);
+
+        img {
+            height: 80%;
+            width: 100%;
+            object-fit: cover;
+            vertical-align: bottom;
+        }
+
+        h2 {
+            flex-grow: 1;
+            padding-left: 0.2em;
+            padding-right: 0.2em;
+            width: 0;
+            min-width: 95%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            direction: rtl;
+            text-align: end;
+            vertical-align: middle;
+        }
+    }
+
+    div:last-child {
+        flex-grow: 10;
+    }
+
+    .img-wrapper:hover {
+        h2 {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+    }
+
+    .tooltip {
+        position: relative;
+    }
+
+    .tooltip:before {
+        content: attr(data-tooltip);
+        position: absolute;
+
+        left: 50%;
+        transform: translateX(-50%);
+
+        top: 40%;
+
+        width: 50%;
+        padding: 10px;
+        border-radius: 10px;
+        background: var(--primary-color);
+        color: var(--text-color);
+        text-align: center;
+
+        display: none;
+    }
+
+    .tooltip:hover:before {
+        display: block;
+    }
+</style>
