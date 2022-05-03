@@ -12,6 +12,41 @@ The project is developed for the "Component Technologies" class at AGH Universit
 
 # Graphical interface
 
+## Overview
+
+Graphical allows the user to to search recursively for images in a given path.
+
+The interface is minimalistic, consisting only of three components:
+ - The path input field,
+ - The module controls,
+ - The result list.
+
+![image](https://user-images.githubusercontent.com/58555777/166555841-82596157-67d2-462a-8c7e-cf22c1b58834.png)
+
+The query can be aditionalty supplied with aditional criteria via the module controls. those modules include: 
+ - The metadata module - exif based,![image](https://user-images.githubusercontent.com/58555777/166554899-53e1073e-12ce-4a45-b5f0-5449a20b5e07.png)
+ - The text content module - searching for images including text of a given length or specific sentences,![image](https://user-images.githubusercontent.com/58555777/166555115-f3ecce50-88cc-4f3c-b993-2e1ff651a80e.png)
+ - The weather module - TODO,
+
+
+## Building the interface
+
+Prerequisites:
+ - [NodeJS](https://nodejs.dev/) - v16.14.1 or greater,
+
+To build the interface, firstly go to the /ui subdirectory:
+    
+    $ cd ui
+Then install all dependencies:
+    
+    $ npm install
+And lastly run the dev build script:
+
+    $ npm run dev
+
+
+## UI project structure
+
 **TODO**
 
 # Backend architecture
