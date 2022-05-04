@@ -47,7 +47,19 @@ And lastly run the dev build script:
 
 ## UI project structure
 
-**TODO**
+The interface is written in svelte and typescript and is stored in the `/ui` subdirectory of the repository.
+
+The GUI currently consists of 3 components:
+ - Form - contains the searchbar and the search module controls definitions, sends queries for images to the backend,
+ - ResultsList - displays and filters the found images,
+ - ImageFinder - a wrapper component for the other components.
+
+As well as the following util scripts:
+ - flashOptions - translates exif flash number codes to readable text,
+ - request.utis - contains the logic for communicating with the backend server.
+
+The dependencies, building and running scripts are defined in the standard `package.json` file
+
 
 # Backend architecture
 
