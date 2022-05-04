@@ -58,8 +58,7 @@ As well as the following util scripts:
  - flashOptions - translates exif flash number codes to readable text,
  - request.utis - contains the logic for communicating with the backend server.
 
-The dependencies, building and running scripts are defined in the standard `package.json` file
-
+The dependencies, building and running scripts are defined in the standard `package.json` file.
 
 # Backend architecture
 
