@@ -29,7 +29,7 @@ The query can be additionally supplied with additional criteria via the module c
  - The weather module - TODO,
 
 
-## Building the interface
+## Building and running the interface
 
 Prerequisites:
  - [NodeJS](https://nodejs.dev/) - v16.14.1 or greater,
@@ -62,6 +62,53 @@ The dependencies, building and running scripts are defined in the standard `pack
 
 # Backend architecture
 
-**TODO**
+## Overview
+
+The backend consists of a master node that receives queries from the GUI and propagates requests to module nodes that filter the query results in a pipeline.
+
+The server expects a request containing a **directory** and an object with the **module options**. When a new request is received, the **master node** searches recursively in the specified directory for images. When the node finds a **batch** (size 10) of images it creates a **request pipeline** defined in the **options object** and sends it to the **module nodes**. The nodes process the batch in sequence, while the **master node** sends in new **batches** as it finds them. Each processed batch is collected by the master node and added to the **result list**. After all batches have been processed, the **result list** is returned to the **GUI**.
+
+![image](https://user-images.githubusercontent.com/58555777/166975490-594d0e00-70d4-4a37-b7e9-77f0a6c8c0af.png)
+
+## Building and running the server
+
+Prerequisites:
+ - [NodeJS](https://nodejs.dev/) - v16.14.1 or greater,
+ - [Elixir](https://elixir-lang.org/) - v1.13.4 or greater,
+ - [Tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html) - v4.1.0.
+
+Building the backend requires building each node.
+
+### Master and metadata nodes (NodeJS):
+    
+    $ cd server
+Then install all dependencies:
+    
+    $ npm install
+Run the nodes:
+
+    $ npm run start
+    
+Testing the nodes:
+
+    $ npm run test
+    
+### Text node (Elixir):
+    
+    $ cd text_server
+Build steps:
+    
+    $ mix local.hex
+    $ mix deps.get
+
+Running text node:
+    
+    $ iex -S mix
+    
+Testing text node:
+
+    $ mix test
+
+## Backend project structure
 
 
