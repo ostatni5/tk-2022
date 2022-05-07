@@ -14,7 +14,7 @@ The project is developed for the "Component Technologies" class at AGH Universit
 
 ## Overview
 
-Graphical allows the user to search recursively for images in a given path.
+Graphical interface allows the user to search recursively for images in a given path.
 
 The interface is minimalistic, consisting only of three components:
  - The path input field,
