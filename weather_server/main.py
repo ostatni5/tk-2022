@@ -46,7 +46,7 @@ class WeatherModule(Resource):
 	"""Class responsible for handling the weather module"""
  
 	@staticmethod
-	def get_weather(weather_type, precision, paths, results, index, size):
+	def get_weather(weather_type, precision, paths, results, index, size=1):
 		"""Get weather"""
 		for k in range(size):
 			if k+index >= len(paths):

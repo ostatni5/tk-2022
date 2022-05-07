@@ -5,11 +5,13 @@ from predict_weather_in_image import pwii
 from main import WeatherModule, create_app
 from urllib.request import urlopen
 from flask import request
+import os
+ROOT_PATH = os.getcwd().split("weather_server")[0].replace(os.sep, '/')
 
 class TestModule:
     paths = [
-        "D:/Repozytoria/tk-2022/server/resources/exampleImages/Cloudy329.jpg",
-        "D:/Repozytoria/tk-2022/server/resources/exampleImages/flower2.jpg"
+        os.path.join(ROOT_PATH,"server/resources/Cloudy/Cloudy13.jpg"),
+        os.path.join(ROOT_PATH,"server/resources/Clear/Clear60.jpg")
         ]
     
     label_lines = [
@@ -40,11 +42,13 @@ class TestModule:
         return app.test_client()
     
     def test_predict_function(self):
-        assert len(pwii(self.paths[0]).keys()) == len(self.label_lines)
+        result = pwii(self.paths[0])
+        print(result.keys())
+        assert len(result.keys()) == len(self.label_lines)
         
     def test_get_weather_method(self):
         results = [False] * len(self.paths)
-        for (i, _) in enumerate(self.paths):
+        for i in range(len(self.paths)):
             WeatherModule.get_weather(self.weather_type, 0, self.paths, results, i)
         assert all(a == b for a, b in zip(results, [True, False]))
         
