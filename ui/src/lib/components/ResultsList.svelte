@@ -35,18 +35,19 @@
     }
 </script>
 
-<div class="search-bar">
-    <label>
-        Search in results:
-        <input
-            type="text"
-            placeholder="pattern"
-            bind:value={search}
-            on:change={() => updateTable(data)}
-        />
-    </label>
-</div>
-
+{#if data.length > 0}
+    <div class="search-bar">
+        <label>
+            Search in results:
+            <input
+                type="text"
+                placeholder="pattern"
+                bind:value={search}
+                on:change={() => updateTable(data)}
+            />
+        </label>
+    </div>
+{/if}
 <div class="gallery">
     {#each visibleResults as result}
         <div
