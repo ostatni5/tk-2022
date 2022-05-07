@@ -21,10 +21,11 @@ const options = {
 
 mainModule.use(bodyParser.raw(options));
 
-mainModule.use(cors({
-	origin: 'http://localhost:3000'
-}));
-
+mainModule.use(
+	cors({
+		origin: 'http://localhost:3000',
+	}),
+);
 
 mainModule.post('/', getHandler(handleRequest, serialize));
 
