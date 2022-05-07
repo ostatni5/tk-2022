@@ -110,5 +110,37 @@ Testing text node:
     $ mix test
 
 ## Backend project structure
+The backend consists of many lightweight nodes (REST servers) implemented in different technologies. The master and metadata nodes are both implemented in NodeJS, sharing some functionalities, and therefore are defined in the same directory - `node_servers`. The other modules each use different technologies and are defined in separate directories.
+
+### Node Servers common directory
+The `node_servers` directory contains the following directories:
+ - `modules` - stores the main and metadata modules described in the later sections,
+ - `classes` - defines abstract classes and interfaces that are shared between modules,
+ - `utils` - contains implementations of common utility functions used in the modules.
+
+### Main Module
+The main module is a NodeJS REST server that resides in the main module directory. Its contents are:
+ - `main.ts` - contains the definition of the main node and its functions: receiving queries from the UI and delegating tasks to module nodes,
+ - `filesFinder.ts` - contains utility functions for finding images in a directory recursively.
+
+### Metadata Module
+The metadata module is also a NodeJS REST server that resides in the metadata module directory. It contains the following:
+ - `metadata.ts` - contains the definition of the REST application along with the filtering logic,
+ - `medatadaRequest.ts` - defines the request object that is received by this module,
+ - `metadataOptions.interface.ts` - defines an interface for the possible filtering options that can be used in the REST request.
+
+### Text Module
+The text module is a simple Elixir REST application and is defined inside of the `text_server` directory, and consists of:
+ - `mix.exs` - file, that defines the dependencies, 
+ - `/test` - directory, where tests and test-related utils are defined along with some test case images, 
+ - `/lib` - directory, which contains the functionality of the component.
+
+Inside the lib directory, you can find the text_server module which contains the following files:
+ - `application.ex` - the REST wrapper for the ocr logic,
+ - `text_server_router.ex` - defines the REST API interface,
+ - `ocr.ex` - this is where the text recognition logic resides.
+
+### Weather Module
+TODO
 
 
