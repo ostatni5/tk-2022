@@ -1,4 +1,4 @@
-import MetadataOptions from './metadataOptions';
+import MetadataOptions from './metadataOptions.interface';
 export default class MetadataRequest {
 	paths: string[];
 	options: MetadataOptions;

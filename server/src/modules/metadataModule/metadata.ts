@@ -3,8 +3,8 @@ import express, { Application } from 'express';
 import { asyncFilter } from '../../utils/async.utils';
 import { getImageExif, parseExifDate } from '../../utils/metadata.utils';
 import { getHandler } from '../../utils/request.utils';
-import { filterRange, filterValue, } from './metadata.filters';
-import MetadataOptions from './metadataOptions';
+import { filterRange, filterValue, } from '../../utils/filter.utils';
+import MetadataOptions from './metadataOptions.interface';
 import MetadataRequest from './metadataRequest';
 
 const metadataModule: Application = express();

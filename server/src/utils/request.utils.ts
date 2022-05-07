@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Response } from 'express';
-import { ModuleOptions } from '../classes/moduleOptions';
+import { ModuleOptions } from '../classes/moduleOptions.interface';
 
 type Handler = (req: any, res: Response) => Promise<void>;
 type Resolver = (body: any) => Promise<string[] | Error>;
