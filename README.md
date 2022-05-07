@@ -64,11 +64,11 @@ The dependencies, building and running scripts are defined in the standard `pack
 
 ## Overview
 
-The backend consists of a master node that receives queries from the GUI and propagates requests to module nodes that filter the query results in a pipeline.
+The backend consists of a main node that receives queries from the GUI and propagates requests to module nodes that filter the query results in a pipeline.
 
-The server expects a request containing a **directory** and an object with the **module options**. When a new request is received, the **master node** searches recursively in the specified directory for images. When the node finds a **batch** (size 10) of images it creates a **request pipeline** defined in the **options object** and sends it to the **module nodes**. The nodes process the batch in sequence, while the **master node** sends in new **batches** as it finds them. Each processed batch is collected by the master node and added to the **result list**. After all batches have been processed, the **result list** is returned to the **GUI**.
+The server expects a request containing a **directory** and an object with the **module options**. When a new request is received, the **main node** searches recursively in the specified directory for images. When the node finds a **batch** (size 10) of images it creates a **request pipeline** defined in the **options object** and sends it to the **module nodes**. The nodes process the batch in sequence, while the **main node** sends in new **batches** as it finds them. Each processed batch is collected by the main node and added to the **result list**. After all batches have been processed, the **result list** is returned to the **GUI**.
 
-![image](https://user-images.githubusercontent.com/58555777/166975490-594d0e00-70d4-4a37-b7e9-77f0a6c8c0af.png)
+![image](https://user-images.githubusercontent.com/58555777/167266398-463073b4-77f7-405e-914e-a72e2a23a442.png)
 
 ## Building and running the server
 
@@ -79,7 +79,7 @@ Prerequisites:
 
 Building the backend requires building each node.
 
-### Master and metadata nodes (NodeJS):
+### Main and metadata nodes (NodeJS):
     
     $ cd server
 Then install all dependencies:
@@ -110,7 +110,7 @@ Testing text node:
     $ mix test
 
 ## Backend project structure
-The backend consists of many lightweight nodes (REST servers) implemented in different technologies. The master and metadata nodes are both implemented in NodeJS, sharing some functionalities, and therefore are defined in the same directory - `node_servers`. The other modules each use different technologies and are defined in separate directories.
+The backend consists of many lightweight nodes (REST servers) implemented in different technologies. The main and metadata nodes are both implemented in NodeJS, sharing some functionalities, and therefore are defined in the same directory - `node_servers`. The other modules each use different technologies and are defined in separate directories.
 
 ### Node Servers common directory
 The `node_servers` directory contains the following directories:
