@@ -2,39 +2,25 @@
     import { createEventDispatcher } from 'svelte';
     import { slide } from 'svelte/transition';
     import { flashOptions } from '../utils/flashOptions';
+    import { weatherOptions } from '../utils/weatherOptions';
+    import formConfigMap, {isMetadataConfig, isTextConfig, isWeatherConfig, FormRange} from '../utils/moduleFormConfig';
 
     export let searching = false;
 
-    const formData = {
-        path: '',
-        metadata: {
-            active: false,
-            createdAfter: '',
-            createdBefore: '',
-            flash: '',
-            fNumber: '',
-            focalLength: '',
-            exposureTime: '',
-            pixelXDimMin: '',
-            pixelXDimMax: '',
-            pixelYDimMin: '',
-            pixelYDimMax: '',
-        },
-        text: {
-            active: false,
-            hasText: false,
-            maxLength: '',
-            minLength: '',
-            containsText: '',
-        },
-        // weather: {
-        //     active: false,
-        //     ...
-        // }
-    };
+    const modules = Object.keys(formConfigMap);
 
-    let wrongPath = true;
-    let metadataVisible = false;
+    const moduleUis = {}
+    modules.map(module => {
+        moduleUis[module] ={
+            arrowDirection: 'down',
+            visible: false,
+        };
+    });
+
+    const directory = {
+        path: '',
+        isValid: false,
+    }
 
     const dispatch = createEventDispatcher();
 
@@ -45,7 +31,8 @@
     };
 
     const handlePathInput = (e: Event) => {
-        wrongPath = !isPath((e.target as HTMLInputElement).value);
+        directory.path = (e.target as HTMLInputElement).value;
+        directory.isValid = isPath((e.target as HTMLInputElement).value);
     };
 
     const handleClick = (module: string) => () => {
@@ -63,70 +50,54 @@
         input.style.color = input.value !== '' ? 'black' : '';
     };
 
-    const changeRange = (e: Event) => {
-        let input = e.target as HTMLInputElement;
-        if (parseInt(formData.text.maxLength) < parseInt(formData.text.minLength))
-            if (input.name === 'minLength') {
-                formData.text.minLength = formData.text.maxLength;
-                input.value = formData.text.minLength;
-            } else {
-                formData.text.maxLength = formData.text.minLength;
-                input.value = formData.text.maxLength;
-            }
-    };
-
     const handleSubmit = () => {
-        if (isPath(formData.path)) {
-            dispatch('search', formData);
+        if (directory.isValid) {
+            dispatch('search', formConfigMap);
         }
     };
 
-    const moduleUis = {
-        metadata: {
-            arrowDirection: 'down',
-            visible: false,
-        },
-        text: {
-            arrowDirection: 'down',
-            visible: false,
-        },
-        // weather:{
-        //     arrowDirection: 'down',
-        //     visible: false,
-        // }
-    };
+    const handleRangeChange = (range:FormRange, property: keyof FormRange) => (e: Event) => {
+        let input = e.target as HTMLInputElement;
+        range.clamp(property, input.value);
+    }
 </script>
 
 <form on:submit|preventDefault={handleSubmit} autocomplete="off">
+
+
+    <!-- PATH SECTION -->
     <div class="inputContainer">
         <label
             >Path to directory
             <input
                 type="text"
                 on:input={handlePathInput}
-                bind:value={formData.path}
+                bind:value={directory.path}
                 placeholder="C:/images"
                 autocomplete="on"
             />
         </label>
-        {#if wrongPath && formData.path.length != 0}
-            <p class="errorMessage">This is not a path</p>
+        {#if !(directory.path.length === 0 || directory.isValid)}
+            <p class="errorMessage">This is not a vaild path</p>
         {/if}
     </div>
+
+
+    <!-- METADATA SECTION -->
     <div class="inputContainer">
         <p class="inputContainerTitle" on:click={handleClick('metadata')}>
             <input
                 type="checkbox"
-                bind:checked={formData['metadata'].active}
+                bind:checked={formConfigMap['metadata']._active}
                 on:click|stopPropagation
             />
             Metadata <i class="arrow {moduleUis['metadata'].arrowDirection}" />
         </p>
-        {#if moduleUis['metadata'].visible}
+        {#if moduleUis['metadata'].visible &&  isMetadataConfig(formConfigMap['metadata'])}
             <div class="moduleForm" transition:slide>
                 <label class="span2col select"
                     >Flash stats
-                    <select bind:value={formData['metadata'].flash}>
+                    <select bind:value={formConfigMap['metadata']._flash}>
                         <option value="">Any</option>
                         {#each flashOptions as { value, name }}
                             <option {value}>{name}</option>
@@ -137,7 +108,7 @@
                     >Created after
                     <input
                         type="date"
-                        bind:value={formData['metadata'].createdAfter}
+                        bind:value={formConfigMap['metadata']._createdAfter}
                         on:change={changeDate}
                     />
                 </label>
@@ -145,7 +116,7 @@
                     >Created before
                     <input
                         type="date"
-                        bind:value={formData['metadata'].createdBefore}
+                        bind:value={formConfigMap['metadata']._createdBefore}
                         on:change={changeDate}
                     />
                 </label>
@@ -155,7 +126,7 @@
                         <input
                             type="number"
                             name="fnumber"
-                            bind:value={formData['metadata'].fNumber}
+                            bind:value={formConfigMap['metadata']._fNumber}
                             min="0"
                             step="0.01"
                         />
@@ -165,7 +136,7 @@
                         <input
                             type="number"
                             name="focal"
-                            bind:value={formData['metadata'].focalLength}
+                            bind:value={formConfigMap['metadata']._focalLength}
                             min="0"
                         />
                     </label>
@@ -174,7 +145,7 @@
                         <input
                             type="number"
                             name="exposure"
-                            bind:value={formData['metadata'].exposureTime}
+                            bind:value={formConfigMap['metadata']._exposureTime}
                             step="0.0001"
                         />
                     </label>
@@ -184,7 +155,8 @@
                     <input
                         type="number"
                         name="minPixelX"
-                        bind:value={formData['metadata'].pixelXDimMin}
+                        bind:value={formConfigMap['metadata']._pixelXDim.min}
+                        on:change={handleRangeChange(formConfigMap['metadata']._pixelXDim, 'min')}
                         min="0"
                     />
                 </label>
@@ -193,7 +165,8 @@
                     <input
                         type="number"
                         name="maxPixelX"
-                        bind:value={formData['metadata'].pixelXDimMax}
+                        bind:value={formConfigMap['metadata']._pixelXDim.max}
+                        on:change={handleRangeChange(formConfigMap['metadata']._pixelXDim, 'max')}
                         min="0"
                     />
                 </label>
@@ -202,7 +175,8 @@
                     <input
                         type="number"
                         name="minPixelY"
-                        bind:value={formData['metadata'].pixelYDimMin}
+                        bind:value={formConfigMap['metadata']._pixelYDim.min}
+                        on:change={handleRangeChange(formConfigMap['metadata']._pixelYDim, 'min')}
                         min="0"
                     />
                 </label>
@@ -211,35 +185,39 @@
                     <input
                         type="number"
                         name="maxPixelY"
-                        bind:value={formData['metadata'].pixelYDimMax}
+                        bind:value={formConfigMap['metadata']._pixelYDim.max}
+                        on:change={handleRangeChange(formConfigMap['metadata']._pixelYDim, 'max')}
                         min="0"
                     />
                 </label>
             </div>
         {/if}
     </div>
+
+
+    <!-- TEXT SECTION -->
     <div class="inputContainer">
         <p class="inputContainerTitle" on:click={handleClick('text')}>
             <input
                 type="checkbox"
-                bind:checked={formData['text'].active}
+                bind:checked={formConfigMap['text']._active}
                 on:click|stopPropagation
             />
             Text content <i class="arrow {moduleUis['text'].arrowDirection}" />
         </p>
-        {#if moduleUis['text'].visible}
+        {#if moduleUis['text'].visible && isTextConfig(formConfigMap['text'])}
             <div class="moduleForm" transition:slide>
                 <label
                     >Has Text
-                    <input type="checkbox" bind:checked={formData['text'].hasText} />
+                    <input type="checkbox" bind:checked={formConfigMap['text']._hasText} />
                 </label>
                 <label class="span2col"
                     >Contains text
                     <input
                         type="text"
-                        bind:value={formData['text'].containsText}
+                        bind:value={formConfigMap['text']._containsText}
                         placeholder="text"
-                        disabled={!formData['text'].hasText}
+                        disabled={!formConfigMap['text']._hasText}
                     />
                 </label>
                 <label class="range"
@@ -247,10 +225,10 @@
                     <input
                         type="number"
                         name="minLength"
-                        bind:value={formData['text'].minLength}
-                        on:change={changeRange}
+                        bind:value={formConfigMap['text']._length.min}
+                        on:change={handleRangeChange(formConfigMap['text']._length, 'min')}
                         min="0"
-                        disabled={!formData['text'].hasText}
+                        disabled={!formConfigMap['text']._hasText}
                     />
                 </label>
                 <label class="range"
@@ -258,17 +236,57 @@
                     <input
                         type="number"
                         name="maxLength"
-                        bind:value={formData['text'].maxLength}
-                        on:change={changeRange}
+                        bind:value={formConfigMap['text']._length.max}
+                        on:change={handleRangeChange(formConfigMap['text']._length, 'max')}
                         min="0"
-                        disabled={!formData['text'].hasText}
+                        disabled={!formConfigMap['text']._hasText}
                     />
                 </label>
             </div>
         {/if}
     </div>
+
+
+    <!-- WEATHER SECTION -->
+    <div class="inputContainer">
+        <p class="inputContainerTitle" on:click={handleClick('weather')}>
+            <input
+                type="checkbox"
+                bind:checked={formConfigMap['weather']._active}
+                on:click|stopPropagation
+            />
+            Weather conditions <i class="arrow {moduleUis['weather'].arrowDirection}" />
+        </p>
+        {#if moduleUis['weather'].visible && isWeatherConfig(formConfigMap['weather'])}
+            <div class="moduleForm" transition:slide>
+                <label class="span2col select"
+                    >Weather type
+                    <select bind:value={formConfigMap['weather']._weather_type}>
+                        <option value="">Any</option>
+                        {#each weatherOptions as { value, name }}
+                            <option {value}>{name}</option>
+                        {/each}
+                    </select>
+                </label>
+                <label
+                    >Prediction precision
+                    <input
+                        type="number"
+                        name="precision"
+                        bind:value={formConfigMap['weather']._precision}
+                        min="0"
+                        max="9"
+                        step="1"
+                    />
+                </label>
+            </div>
+        {/if}
+    </div>
+
+
+    <!-- SUBMIT SECTION -->
     <div class="submitContainer">
-        <input type="submit" value="Search" disabled={wrongPath || searching} />
+        <input type="submit" value="Search" disabled={!directory.isValid || searching} />
     </div>
 </form>
 

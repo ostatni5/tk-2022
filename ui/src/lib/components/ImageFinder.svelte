@@ -14,7 +14,7 @@
             moduleOptions: []
         };
 
-        if(formData.metadata.active){
+        if(formData["metadata"].active){
             let new_options:Record<string,any> = {};
             new_options.name = "metadata";  
             if(formData.metadata.createdAfter !== '') new_options.createdAfter = formData.metadata.createdAfter;
@@ -30,16 +30,30 @@
 
             request.moduleOptions.push(new_options);
         };
-        if(formData.text.active){
-            let new_options:Record<string,any> = {};
-            new_options.name = "text";  
-            new_options.hasText = formData.text.hasText;
-            if(formData.text.maxLength !== '') new_options.maxLength = parseInt(formData.text.maxLength);
-            if(formData.text.minLength !== '') new_options.minLength = parseInt(formData.text.minLength);
-            
+        if(formData ["text"].active){
+            const {name, hasText, maxLength, minLength, containsText} = formData["text"]
+            let new_options:Record<string,any> = {
+                name,
+                hasText,
+                ...hasText && {
+                    maxLength,
+                    minLength,
+                    containsText
+                }
+            };
 
             request.moduleOptions.push(new_options);
         };
+
+        if(formData.weather.active){
+            const {weather_type, precision} = formData.weather;
+            let new_options:Record<string,any> = {
+                weather_type,
+                precision,
+                name: "weather"
+            }
+            request.moduleOptions.push(new_options);
+        }
 
         return request;
     }
