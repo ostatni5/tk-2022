@@ -2,7 +2,8 @@ import json
 import pytest
 from urllib import response
 from predict_weather_in_image import pwii
-from main import WeatherModule, create_app
+from create_app import create_app
+from weather_module import WeatherModule
 from urllib.request import urlopen
 from flask import request
 import os
@@ -10,8 +11,8 @@ ROOT_PATH = os.getcwd().split("weather_server")[0].replace(os.sep, '/')
 
 class TestModule:
     paths = [
-        os.path.join(ROOT_PATH,"server/resources/Cloudy/Cloudy13.jpg"),
-        os.path.join(ROOT_PATH,"server/resources/Clear/Clear60.jpg")
+        os.path.join(ROOT_PATH,"resources/Cloudy/Cloudy13.jpg"),
+        os.path.join(ROOT_PATH,"resources/Clear/Clear374.jpg")
         ]
     
     label_lines = [
@@ -49,19 +50,19 @@ class TestModule:
     def test_get_weather_method(self):
         results = [False] * len(self.paths)
         for i in range(len(self.paths)):
-            WeatherModule.get_weather(self.weather_type, 0, self.paths, results, i)
+            WeatherModule.get_weather(self.weather_type, 0, self.paths, results)
         assert all(a == b for a, b in zip(results, [True, False]))
         
     def test_precision(self):
         results = [False] * len(self.paths)
         for i in range(len(self.paths)):
-            WeatherModule.get_weather(self.weather_type, 10, self.paths, results, i)
+            WeatherModule.get_weather(self.weather_type, 10, self.paths, results)
         assert all(a == b for a, b in zip(results, [True, True]))
     
     def test_get_weather_api(self, client):
-        body = {"paths": self.paths, "options": {"weather_type": self.weather_type, "precision": 0}}
+        body = {"paths": self.paths, "options": {"weatherType": self.weather_type, "precision": 0}}
         response = client.post("/", json=body)
-        print(response.json)
+        print("Response",response.json)
         assert response.status_code == 200
         assert len(response.json["pictures"]) == 1
         assert response.json["pictures"][0] == self.paths[0]
