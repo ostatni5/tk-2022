@@ -2,7 +2,7 @@ import express, { Application } from 'express';
 import PictureRequest from '../../classes/pictureRequest';
 import bodyParser from 'body-parser';
 import { directoryImagesGenerator } from './filesFinder';
-import { ModuleOptions, ModuleRoutes } from '../../classes/moduleOptions';
+import { ModuleOptions, ModuleRoutes } from '../../classes/moduleOptions.interface';
 import { getHandler, promiseReduce } from '../../utils/request.utils';
 import { serialize } from 'bson';
 import cors from 'cors';

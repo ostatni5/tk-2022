@@ -1,5 +1,5 @@
 import { deserialize } from 'bson';
-import { ModuleOptions } from './moduleOptions';
+import { ModuleOptions } from './moduleOptions.interface';
 
 export default class PictureRequest {
 	path: string;
