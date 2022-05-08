@@ -50,16 +50,16 @@
         input.style.color = input.value !== '' ? 'black' : '';
     };
 
-    const handleSubmit = () => {
-        if (directory.isValid) {
-            dispatch('search', formConfigMap);
-        }
-    };
-
     const handleRangeChange = (range:FormRange, property: keyof FormRange) => (e: Event) => {
         let input = e.target as HTMLInputElement;
-        range.clamp(property, input.value);
+        range.clamp(property, parseFloat(input.value));
     }
+
+    const handleSubmit = () => {
+        if (directory.isValid) {
+            dispatch('search', {config: formConfigMap, path: directory.path});
+        }
+    };
 </script>
 
 <form on:submit|preventDefault={handleSubmit} autocomplete="off">
@@ -262,14 +262,13 @@
                 <label class="span2col select"
                     >Weather type
                     <select bind:value={formConfigMap['weather']._weather_type}>
-                        <option value="">Any</option>
                         {#each weatherOptions as { value, name }}
                             <option {value}>{name}</option>
                         {/each}
                     </select>
                 </label>
                 <label
-                    >Prediction precision
+                    >Max prediction offset
                     <input
                         type="number"
                         name="precision"

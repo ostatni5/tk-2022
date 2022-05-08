@@ -1,9 +1,29 @@
-abstract class AbstractModuleConfig {
+import type { FlashType } from './flashOptions';
+import type { WeatherType } from './weatherOptions';
+
+function notEmptyString(value: string): string {
+    if (value.length === 0) return undefined;
+    return value;
+}
+
+function notNullNumber(value: number): number {
+    if (value === null) return undefined;
+    return value;
+}
+
+function notEmptyHex(value: string): number {
+    const parsed = parseInt(value, 16);
+    if (isNaN(parsed)) return undefined;
+    return parsed;
+}
+
+export abstract class AbstractModuleConfig {
     _active: boolean;
     name: string;
     get active() {
         return this._active;
     }
+    abstract get allConfig(): Record<string, any> & { name: string };
     constructor(name) {
         this._active = false;
         this.name = name;
@@ -11,22 +31,22 @@ abstract class AbstractModuleConfig {
 }
 
 export class FormRange {
-    min: string;
-    max: string;
-    clamp(property: keyof FormRange, value: string) {
+    min: number;
+    max: number;
+    clamp(property: keyof FormRange, value: number) {
         switch (property) {
             case 'min':
-                this.min = Math.min(parseFloat(value), parseFloat(this.max)).toString();
+                this.min = Math.min(value, this.max);
                 break;
             case 'max':
-                this.max = Math.max(parseFloat(value), parseFloat(this.min)).toString();
+                this.max = Math.max(value, this.min);
                 break;
         }
     }
 
     constructor() {
-        this.min = '';
-        this.max = '';
+        this.min = null;
+        this.max = null;
     }
 }
 
@@ -37,15 +57,29 @@ class TextModuleConfig extends AbstractModuleConfig {
     }
     _length: FormRange;
     get maxLength() {
-        return parseInt(this._length.max);
+        return notNullNumber(this._length.max);
     }
     get minLength() {
-        return parseInt(this._length.min);
+        return notNullNumber(this._length.min);
     }
 
     _containsText: string;
     get containsText() {
-        return this._containsText;
+        return notEmptyString(this._containsText);
+    }
+    get allConfig() {
+        const { name, hasText, maxLength, minLength, containsText } = this;
+        const obj = {
+            name,
+            hasText,
+            ...(hasText && {
+                maxLength,
+                minLength,
+                containsText,
+            }),
+        };
+        Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
+        return obj;
     }
     constructor() {
         super('text');
@@ -62,50 +96,81 @@ export function isTextConfig(config: AbstractModuleConfig): config is TextModule
 class MetadataModuleConfig extends AbstractModuleConfig {
     _createdAfter: string;
     get createdAfter() {
-        return this._createdAfter;
+        return notEmptyString(this._createdAfter);
     }
     _createdBefore: string;
     get createdBefore() {
-        return this._createdBefore;
+        return notEmptyString(this._createdBefore);
     }
-    _flash: string;
+    _flash: FlashType | '';
     get flash() {
-        return parseInt(this._flash, 16);
+        return notEmptyHex(this._flash);
     }
-    _fNumber: string;
+    _fNumber: number;
     get fNumber() {
-        return parseFloat(this._fNumber);
+        return notNullNumber(this._fNumber);
     }
-    _focalLength: string;
+    _focalLength: number;
     get focalLength() {
-        return parseInt(this._focalLength);
+        return notNullNumber(this._focalLength);
     }
-    _exposureTime: string;
+    _exposureTime: number;
     get exposureTime() {
-        return parseFloat(this._exposureTime);
+        return notNullNumber(this._exposureTime);
     }
     _pixelXDim: FormRange;
     _pixelYDim: FormRange;
     get pixelXDimMax() {
-        return parseInt(this._pixelXDim.max);
+        return notNullNumber(this._pixelXDim.max);
     }
     get pixelXDimMin() {
-        return parseInt(this._pixelXDim.min);
+        return notNullNumber(this._pixelXDim.min);
     }
     get pixelYDimMax() {
-        return parseInt(this._pixelYDim.max);
+        return notNullNumber(this._pixelYDim.max);
     }
     get pixelYDimMin() {
-        return parseInt(this._pixelYDim.min);
+        return notNullNumber(this._pixelYDim.min);
     }
+    get allConfig() {
+        const {
+            name,
+            createdAfter,
+            createdBefore,
+            flash,
+            fNumber,
+            focalLength,
+            exposureTime,
+            pixelXDimMin,
+            pixelXDimMax,
+            pixelYDimMin,
+            pixelYDimMax,
+        } = this;
+        const obj = {
+            name,
+            createdAfter,
+            createdBefore,
+            flash,
+            fNumber,
+            focalLength,
+            exposureTime,
+            pixelXDimMin,
+            pixelXDimMax,
+            pixelYDimMin,
+            pixelYDimMax,
+        };
+        Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
+        return obj;
+    }
+
     constructor() {
         super('metadata');
         this._createdAfter = '';
         this._createdBefore = '';
         this._flash = '';
-        this._fNumber = '';
-        this._focalLength = '';
-        this._exposureTime = '';
+        this._fNumber = null;
+        this._focalLength = null;
+        this._exposureTime = null;
         this._pixelXDim = new FormRange();
         this._pixelYDim = new FormRange();
     }
@@ -116,18 +181,24 @@ export function isMetadataConfig(config: AbstractModuleConfig): config is Metada
 }
 
 class WeatherModuleConfig extends AbstractModuleConfig {
-    _weather_type: string;
+    _weather_type: WeatherType;
     get weatherType() {
-        return this._weather_type;
+        return notEmptyString(this._weather_type);
     }
-    _precision: string;
+    _precision: number;
     get precision() {
-        return parseInt(this._precision);
+        return notNullNumber(this._precision);
+    }
+    get allConfig() {
+        const { name, weatherType, precision } = this;
+        const obj = { name, weatherType, precision };
+        Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
+        return obj;
     }
     constructor() {
         super('weather');
-        this._weather_type = '';
-        this._precision = '';
+        this._weather_type = 'clear';
+        this._precision = null;
     }
 }
 

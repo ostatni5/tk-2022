@@ -44,3 +44,16 @@ export const weatherOptions = [
         name: 'Rain fog',
     },
 ];
+
+export type WeatherType =
+    | 'mostlycloudy'
+    | 'moderate rain'
+    | 'clear'
+    | 'rain showers'
+    | 'mainly clear'
+    | 'cloudy'
+    | 'snow'
+    | 'fog'
+    | 'rain'
+    | 'drizzle'
+    | 'rain fog';
