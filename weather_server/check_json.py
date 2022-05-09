@@ -1,11 +1,6 @@
 from flask import make_response
 
-LABELS = []
-
-weather_types_file = open("./predict_weather_in_image/retrained_labels.txt", "r")
-
-for line in weather_types_file:
-	LABELS.append(line.rstrip())
+LABELS = [l.rstrip() for l in open("./predict_weather_in_image/retrained_labels.txt", "r")]
 
 def check_json(json_data):
 	"""Check if JSON is valid"""

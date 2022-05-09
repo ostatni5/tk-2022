@@ -9,7 +9,7 @@ from flask import request
 import os
 ROOT_PATH = os.getcwd().split("weather_server")[0].replace(os.sep, '/')
 
-class TestModule:
+class TestWeatherRest:
     paths = [
         os.path.join(ROOT_PATH,"resources/Cloudy/Cloudy13.jpg"),
         os.path.join(ROOT_PATH,"resources/Clear/Clear374.jpg")
@@ -66,5 +66,3 @@ class TestModule:
         assert response.status_code == 200
         assert len(response.json["pictures"]) == 1
         assert response.json["pictures"][0] == self.paths[0]
-
-        

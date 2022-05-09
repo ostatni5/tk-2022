@@ -69,7 +69,7 @@ The dependencies, building and running scripts are defined in the standard`packa
 
 ## Overview
 
-The backend consists of the main node that receives queries from the GUI and propagates requests to module nodes that filter the query results in a pipeline.
+The backend consists of the main node that receives queries from the GUI and propagates requests, and side module nodes that filter the query results in a pipeline.
 
 The server expects a request containing a **directory** and an object with the **module options**. When a new request is received, the **main node** searches recursively in the specified directory for images. When the node finds a **batch** (size 10) of images it creates a **request pipeline** defined in the **options object** and sends it to the **module nodes**. The nodes process the batch in sequence, while the **main node** sends in new **batches** as it finds them. Each processed batch is collected by the main node and added to the **result list**. After all, batches have been processed, the **result list** is returned to the **GUI**.
 

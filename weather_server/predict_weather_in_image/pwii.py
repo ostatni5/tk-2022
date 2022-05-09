@@ -58,4 +58,3 @@ def pwii(image_path):
 
 #save function as module
 sys.modules[__name__] = pwii
-

@@ -35,7 +35,7 @@ class WeatherModule(Resource):
 			precision: check if weather_type is contained in top n+1 preditions
 			paths: list of image paths to predict weather in
 			results: filtering list for paths that contain weather_type
-    	"""
+		"""
 		for k in range(len(paths)):
 			result = pwii(paths[k])
 			top_n_weather_types = list(result.keys())[:precision+1]
@@ -65,15 +65,15 @@ class WeatherModule(Resource):
 		#split paths into chunks
 		chunk_size = len(paths) // THREAD_LIMIT + (1 if len(paths) % THREAD_LIMIT != 0 else 0) 
 		paths_in_chunks = [
-      					paths[i:min(i+chunk_size,len(paths))] 
-                     	for i in range(0, len(paths), chunk_size)
-                    ]
+	  					paths[i:min(i+chunk_size,len(paths))] 
+					 	for i in range(0, len(paths), chunk_size)
+					]
 		print("Paths in chunks: ", paths_in_chunks)
 
 		filter_in_chunks = [
-      					filter_array[i:min(i+chunk_size,len(filter_array))] 
-           				for i in range(0, len(filter_array), chunk_size)
-               		]
+	  					filter_array[i:min(i+chunk_size,len(filter_array))] 
+		   				for i in range(0, len(filter_array), chunk_size)
+			   		]
   
 		for i in range(len(paths_in_chunks)):
 			t = threading.Thread(
