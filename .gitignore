@@ -10,3 +10,5 @@ node_modules
 .output
 *.bson
 .vscode
+__pycache__
+weather_server/env

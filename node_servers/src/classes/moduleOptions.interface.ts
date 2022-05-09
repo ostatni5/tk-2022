@@ -8,4 +8,5 @@ export const ModuleRoutes = {
 	metadata: 'http://localhost:8083/',
 	text: 'http://localhost:8085/',
 	people: 'http://localhost:8087/'
+	weather: 'http://localhost:8086/',
 };
