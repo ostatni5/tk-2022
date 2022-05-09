@@ -7,7 +7,7 @@ export type ModuleType = keyof typeof moduleManager;
 export const moduleManager = {
 	main,
 	example,
-	metadata,
+	metadata
 } as const;
 
 export function isModuleType(value: string | undefined): value is ModuleType {
