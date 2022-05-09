@@ -4,31 +4,31 @@
 name: Elixir CI
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
 
 # see https://github.community/t/treating-warnings-as-errors-because-process-env-ci-true/18032
 env:
-  CI: false
+    CI: false
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-elixir@v1
-        with:
-          otp-version: "22.2"
-          elixir-version: "1.13"
-          experimental-otp: true
-          
-      - run: sudo apt-get update
-      - name: install tesseract
-        run: sudo apt-get install tesseract-ocr -y
-      - run: tesseract --version
-      - working-directory: ./text_server
-        run: mix deps.get
-      - working-directory: ./text_server
-        run: mix test
+    build_and_test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-elixir@v1
+              with:
+                  otp-version: "22.2"
+                  elixir-version: "1.13"
+                  experimental-otp: true
+
+            - run: sudo apt-get update
+            - name: install tesseract
+              run: sudo apt-get install tesseract-ocr -y
+            - run: tesseract --version
+            - working-directory: ./text_server
+              run: mix deps.get
+            - working-directory: ./text_server
+              run: mix test

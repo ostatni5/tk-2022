@@ -8,22 +8,22 @@ const rootPath = process.cwd().split('\\').join('/').split('/server')[0];
 const testCases = [
 	{
 		testRequest: {
-			path: `${rootPath}/server/resources/exampleImages`,
+			path: `${rootPath}/resources/exampleImages`,
 			moduleOptions: [],
 		},
 		testResponse: {
 			pictures: [
-				`${rootPath}/server/resources/exampleImages/bike.jpg`,
-				`${rootPath}/server/resources/exampleImages/bus.jpg`,
-				`${rootPath}/server/resources/exampleImages/feather.jpg`,
-				`${rootPath}/server/resources/exampleImages/fish.jpg`,
-				`${rootPath}/server/resources/exampleImages/flower1.jpg`,
-				`${rootPath}/server/resources/exampleImages/flower2.jpg`,
-				`${rootPath}/server/resources/exampleImages/lizard1.jpg`,
-				`${rootPath}/server/resources/exampleImages/lizard2.jpg`,
-				`${rootPath}/server/resources/exampleImages/lizard3.jpg`,
-				`${rootPath}/server/resources/exampleImages/ptsd.jpg`,
-				`${rootPath}/server/resources/exampleImages/trees.jpg`
+				`${rootPath}/resources/exampleImages/bike.jpg`,
+				`${rootPath}/resources/exampleImages/bus.jpg`,
+				`${rootPath}/resources/exampleImages/feather.jpg`,
+				`${rootPath}/resources/exampleImages/fish.jpg`,
+				`${rootPath}/resources/exampleImages/flower1.jpg`,
+				`${rootPath}/resources/exampleImages/flower2.jpg`,
+				`${rootPath}/resources/exampleImages/lizard1.jpg`,
+				`${rootPath}/resources/exampleImages/lizard2.jpg`,
+				`${rootPath}/resources/exampleImages/lizard3.jpg`,
+				`${rootPath}/resources/exampleImages/ptsd.jpg`,
+				`${rootPath}/resources/exampleImages/trees.jpg`,
 			],
 		},
 	},
