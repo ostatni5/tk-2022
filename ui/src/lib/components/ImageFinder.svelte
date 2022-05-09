@@ -10,7 +10,9 @@
     $: searching = false;
 
     const createRequest = ({path, config}): ImagesRequest => {
-        const moduleOptions = Object.values(config).map(
+        const moduleOptions = Object.values(config).filter(
+            (option: AbstractModuleConfig) => option.active
+        ).map(
             (module: AbstractModuleConfig) => module.allConfig
         )
         const request = {
