@@ -1,3 +1,4 @@
+# TODO: Fix action #70
 # This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
@@ -24,12 +25,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: Dovyski/setup-opencv-action@v1
+      - name: Cache OpenCV
+        id: opencv-cache
+        uses: actions/cache@v2
         with:
-          opencv-version: '4.5.5'
-      
-      - run: pip install conan   
+          path: ./opencv-install
+          key: ${{ runner.os }}-opencv-cache
 
+      - name: Install OpenCV
+        uses: rayandrews/with-opencv-action@v1
+        with:  
+          dir: ./opencv-install
+          cached: ${{ steps.opencv-cache.outputs.cache-hit }}
+          opencv-version: '4.5.5'
+
+      - run: pip install conan   
 
       - working-directory: ./people_server
         run: mkdir build
