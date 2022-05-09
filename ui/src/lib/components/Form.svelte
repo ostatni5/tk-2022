@@ -258,8 +258,8 @@
             Weather conditions <i class="arrow {moduleUis['weather'].arrowDirection}" />
         </p>
         {#if moduleUis['weather'].visible && isWeatherConfig(formConfigMap['weather'])}
-            <div class="moduleForm" transition:slide>
-                <label class="span2col select"
+            <div class="moduleForm two2one" transition:slide>
+                <label
                     >Weather type
                     <select bind:value={formConfigMap['weather']._weather_type}>
                         {#each weatherOptions as { value, name }}
@@ -388,10 +388,11 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 0.5rem 2rem;
+
     }
-    // .range input[type='range'] {
-    //     transform: translateY(2px);
-    // }
+    .moduleForm.two2one {
+        grid-template-columns: 2fr 1fr;
+    }
 
     .range .label {
         position: absolute;
