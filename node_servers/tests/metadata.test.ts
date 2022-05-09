@@ -1,7 +1,7 @@
 import supertest from 'supertest';
 import metadata from '../src/modules/metadataModule/metadata';
 
-const rootPath = process.cwd().split('\\').join('/').split('/server')[0];
+const rootPath = process.cwd().split('\\').join('/').split('/node_servers')[0];
 
 const testCases = [
 	// Test case 1 - test if no option returns all

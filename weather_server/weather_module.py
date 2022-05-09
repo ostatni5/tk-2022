@@ -4,9 +4,8 @@ from flask import make_response, request
 from predict_weather_in_image import pwii
 from check_json import check_json
 import threading
-import sys
 
-THREAD_LIMIT = 10
+THREAD_LIMIT = 3
 
 
 class _OptionsSchema(Schema):
