@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "workspaces": [
-    "ui",
-    "server"
+    "node_servers",
+    "ui"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified. Run /w flag --workspaces to test submodules.\" && exit 1"
