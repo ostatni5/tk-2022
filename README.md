@@ -34,7 +34,7 @@ The query can be additionally supplied with additional criteria via the module c
 
 Prerequisites:
 
--   [NodeJS](https://nodejs.dev/) - v16.14.1 or greater,
+-   [NodeJS](https://nodejs.dev/) - v16.14.1 or higher,
 
 To build the interface, firstly go to the /ui subdirectory:
 
@@ -79,17 +79,18 @@ The server expects a request containing a **directory** and an object with the *
 
 Prerequisites:
 
--   [NodeJS](https://nodejs.dev/) - v16.14.1 or greater,
--   [Elixir](https://elixir-lang.org/) - v1.13.4 or greater,
--   [Tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html) - v4.1.0.
+-   [NodeJS](https://nodejs.dev/) - v16.14.1 or higher,
+-   [Elixir](https://elixir-lang.org/) - v1.13.4 or higher,
+-   [Tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html) - v4.1.0. or higher
+-   [Conan](https://conan.io/) - v1.47.0 or higher
+-   [CMake](https://cmake.org/) - v3.21.0 or higher
 -   [Python](https://www.python.org/) - v3.10 or greater,
--   [Pipenv](https://pipenv.pypa.io/) - v2022.5.2 or greater,
 
 Building the backend requires building each node.
 
 ### Main and metadata nodes (NodeJS):
 
-    $ cd server
+    $ cd node_servers
 
 Then install all dependencies:
 
@@ -129,11 +130,12 @@ Build steps:
     $ python -m venv ./env
 
     For Windows:
-    $ ./env/Scripts/Activate.ps1
+
+    $ ./env/Scripts/Activate.ps1 (or .bat)
 
     or for Linux/Mac:
 
-    $ ./env/Scripts/Activate.bat
+    $ ./env/Scripts/activate
 
     Then:
     $ python -m pip install -r requirements.txt
@@ -149,6 +151,21 @@ Running the weather node from the root directory:
 Testing the weather node from the root directory:
 
     $ python -m pytest ./weather_server/test/test_module.py
+
+### People node (C++):
+
+    $ cd people_server
+
+Build steps:
+
+    $ mkdir build && cd build
+    $ conan install ..
+    $ cmake ..
+    $ cmake --build .
+
+To start server run executable named `peopleServer`
+
+To run tests execute `peopleTest`
 
 ## Backend project structure
 
@@ -210,4 +227,16 @@ Inside the `predict_weather_in_image` directory, you can find the following file
 
 ### People Module
 
-TODO
+The people module is a simple C++ REST application and is in the `people_server` directory. It consists of:
+
+-   `conanfile.txt` - file with defined dependencies,
+-   `CMakeLists.txt` - file needed by CMake to generate build files,
+-   `/src` - directory with source code
+-   `/test` - directory with tests
+
+Inside the src directory are these files:
+
+-   `peopleServer` - the REST server,
+-   `processRequest` - file with functions for processing requests,
+-   `PeopleDetector` - here is people detection implemented,
+-   `cascades` - directory with cascade files used in people detection.
