@@ -1,0 +1,8 @@
+[requires]
+opencv/4.5.5
+restinio/0.6.14
+nlohmann_json/3.10.5
+gtest/1.11.0
+
+[generators]
+cmake

@@ -32,7 +32,7 @@ The query can be additionally supplied with additional criteria via the module c
 ## Building and running the interface
 
 Prerequisites:
- - [NodeJS](https://nodejs.dev/) - v16.14.1 or greater,
+ - [NodeJS](https://nodejs.dev/) - v16.14.1 or higher,
 
 To build the interface, firstly go to the /ui subdirectory:
     
@@ -73,15 +73,17 @@ The server expects a request containing a **directory** and an object with the *
 ## Building and running the server
 
 Prerequisites:
- - [NodeJS](https://nodejs.dev/) - v16.14.1 or greater,
- - [Elixir](https://elixir-lang.org/) - v1.13.4 or greater,
- - [Tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html) - v4.1.0.
+ - [NodeJS](https://nodejs.dev/) - v16.14.1 or higher,
+ - [Elixir](https://elixir-lang.org/) - v1.13.4 or higher,
+ - [Tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html) - v4.1.0. or higher
+ - [Conan](https://conan.io/) - v1.47.0 or higher
+ - [CMake](https://cmake.org/) - v3.21.0 or higher
 
 Building the backend requires building each node.
 
 ### Main and metadata nodes (NodeJS):
     
-    $ cd server
+    $ cd nodes_servers
 Then install all dependencies:
     
     $ npm install
@@ -108,6 +110,21 @@ Running text node:
 Testing text node:
 
     $ mix test
+
+### People node (C++):
+
+    $ cd people_server
+
+Build steps:
+
+    $ mkdir build && cd build
+    $ conan install ..
+    $ cmake ..
+    $ cmake --build .
+
+To start server run executable named `peopleServer`
+
+To run tests execute `peopleTest`
 
 ## Backend project structure
 The backend consists of many lightweight nodes (REST servers) implemented in different technologies. The main and metadata nodes are both implemented in NodeJS, sharing some functionalities, and therefore are defined in the same directory - `node_servers`. The other modules each use different technologies and are defined in separate directories.
@@ -143,4 +160,9 @@ Inside the lib directory, you can find the text_server module which contains the
 ### Weather Module
 TODO
 
-
+### People Module
+The people module is a simple C++ REST application and is in the `people_server` directory. It consists of:
+ - `conanfile.txt` - file with defined dependencies,
+ - `CMakeLists.txt` - file needed by CMake to generate build files,
+ - `/src` - directory with source code
+ - `/test` - directory with tests
