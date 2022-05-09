@@ -92,7 +92,7 @@ TEST_F(PeopleTest, twoThreePeople){
     EXPECT_THAT(expected, ::testing::UnorderedElementsAreArray(result));
 }
 
-TEST_F(PeopleTest, moreThanTenPeople){
+TEST_F(PeopleTest, atLeastTenPeople){
     std::vector<std::string> expected = {
         "resources/the-solvay-conference-photo.jpg"
     };

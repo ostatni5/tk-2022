@@ -83,7 +83,7 @@ Building the backend requires building each node.
 
 ### Main and metadata nodes (NodeJS):
     
-    $ cd nodes_servers
+    $ cd node_servers
 Then install all dependencies:
     
     $ npm install
@@ -166,3 +166,9 @@ The people module is a simple C++ REST application and is in the `people_server`
  - `CMakeLists.txt` - file needed by CMake to generate build files,
  - `/src` - directory with source code
  - `/test` - directory with tests
+
+Inside the src directory are these files:
+ - `peopleServer` - the REST server,
+ - `processRequest` - file with functions for processing request,
+ - `PeopleDetector` - here is people detection implemented,
+ - `cascades` - directory with cascade files used in people detection.
