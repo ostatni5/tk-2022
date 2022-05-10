@@ -76,7 +76,7 @@ class WeatherModule(Resource):
         weather_type = json_data.get("options").get("weatherType")
         precision = json_data.get("options").get("precision", 0)
 
-        if(len(path) == 0):
+        if(len(paths) == 0):
             return make_response({
                 "pictures": [],
             }, 200)
