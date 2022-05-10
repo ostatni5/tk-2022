@@ -3,15 +3,21 @@
     import { slide } from 'svelte/transition';
     import { flashOptions } from '../utils/flashOptions';
     import { weatherOptions } from '../utils/weatherOptions';
-    import formConfigMap, {isMetadataConfig, isTextConfig, isWeatherConfig, isPeopleConfig, FormRange} from '../utils/moduleFormConfig';
+    import formConfigMap, {
+        isMetadataConfig,
+        isTextConfig,
+        isWeatherConfig,
+        isPeopleConfig,
+        FormRange,
+    } from '../utils/moduleFormConfig';
 
     export let searching = false;
 
     const modules = Object.keys(formConfigMap);
 
-    const moduleUis = {}
-    modules.map(module => {
-        moduleUis[module] ={
+    const moduleUis = {};
+    modules.map((module) => {
+        moduleUis[module] = {
             arrowDirection: 'down',
             visible: false,
         };
@@ -20,7 +26,7 @@
     const directory = {
         path: '',
         isValid: false,
-    }
+    };
 
     const dispatch = createEventDispatcher();
 
@@ -50,21 +56,19 @@
         input.style.color = input.value !== '' ? 'black' : '';
     };
 
-    const handleRangeChange = (range:FormRange, property: keyof FormRange) => (e: Event) => {
+    const handleRangeChange = (range: FormRange, property: keyof FormRange) => (e: Event) => {
         let input = e.target as HTMLInputElement;
-        range.clamp(property, parseFloat(input.value));
-    }
+        input.value = range.clamp(property, parseFloat(input.value)).toString();
+    };
 
     const handleSubmit = () => {
         if (directory.isValid) {
-            dispatch('search', {config: formConfigMap, path: directory.path});
+            dispatch('search', { config: formConfigMap, path: directory.path });
         }
     };
 </script>
 
 <form on:submit|preventDefault={handleSubmit} autocomplete="off">
-
-
     <!-- PATH SECTION -->
     <div class="inputContainer">
         <label
@@ -82,7 +86,6 @@
         {/if}
     </div>
 
-
     <!-- METADATA SECTION -->
     <div class="inputContainer">
         <p class="inputContainerTitle" on:click={handleClick('metadata')}>
@@ -93,7 +96,7 @@
             />
             Metadata <i class="arrow {moduleUis['metadata'].arrowDirection}" />
         </p>
-        {#if moduleUis['metadata'].visible &&  isMetadataConfig(formConfigMap['metadata'])}
+        {#if moduleUis['metadata'].visible && isMetadataConfig(formConfigMap['metadata'])}
             <div class="moduleForm" transition:slide>
                 <label class="span2col select"
                     >Flash stats
@@ -194,7 +197,6 @@
         {/if}
     </div>
 
-
     <!-- TEXT SECTION -->
     <div class="inputContainer">
         <p class="inputContainerTitle" on:click={handleClick('text')}>
@@ -246,7 +248,6 @@
         {/if}
     </div>
 
-
     <!-- WEATHER SECTION -->
     <div class="inputContainer">
         <p class="inputContainerTitle" on:click={handleClick('weather')}>
@@ -282,7 +283,6 @@
         {/if}
     </div>
 
-
     <!-- PEOPLE SECTION -->
     <div class="inputContainer">
         <p class="inputContainerTitle" on:click={handleClick('people')}>
@@ -299,7 +299,7 @@
                     >Has People
                     <input type="checkbox" bind:checked={formConfigMap['people']._hasPeople} />
                 </label>
-                <br/>
+                <br />
                 <label class="range"
                     >Min number of people
                     <input
@@ -325,7 +325,6 @@
             </div>
         {/if}
     </div>
-
 
     <!-- SUBMIT SECTION -->
     <div class="submitContainer">
@@ -432,7 +431,6 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 0.5rem 2rem;
-
     }
     .moduleForm.two2one {
         grid-template-columns: 2fr 1fr;

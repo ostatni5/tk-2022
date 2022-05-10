@@ -142,7 +142,7 @@ Build steps:
 
 Running the weather node from the root directory:
 
-    $ python -m weather_server
+    $ python -m ./weather_server
 
     or from the weather_server directory:
 

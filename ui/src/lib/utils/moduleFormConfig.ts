@@ -39,17 +39,20 @@ export class FormRange {
     min: number;
     max: number;
     clamp(property: keyof FormRange, value: number) {
-        if (Number.isNaN(value)){
+        if (Number.isNaN(value)) {
             value = null;
         }
         switch (property) {
             case 'min':
-                this.min = value;
+                if (this.max === null || value === null) this.min = value;
+                else this.min = Math.min(value, this.max);
                 break;
             case 'max':
-                this.max = value;
+                if (this.min === null || value === null) this.max = value;
+                else this.max = Math.max(value, this.min);
                 break;
         }
+        return this[property];
     }
 
     constructor() {
@@ -57,7 +60,6 @@ export class FormRange {
         this.max = null;
     }
 }
-
 
 class MetadataModuleConfig extends AbstractModuleConfig {
     _dateAfter: string;
@@ -101,8 +103,8 @@ class MetadataModuleConfig extends AbstractModuleConfig {
     get allConfig() {
         const {
             name,
-            dateAfter: dateAfter,
-            dateBefore: dateBefore,
+            dateAfter,
+            dateBefore,
             flash,
             fNumber,
             focalLength,
@@ -189,7 +191,6 @@ export function isTextConfig(config: AbstractModuleConfig): config is TextModule
     return config.name === 'text';
 }
 
-
 class WeatherModuleConfig extends AbstractModuleConfig {
     _weather_type: WeatherType;
     get weatherType() {
@@ -236,7 +237,7 @@ class PeopleModuleConfig extends AbstractModuleConfig {
             hasPeople,
             ...(hasPeople && {
                 minPeople,
-                maxPeople
+                maxPeople,
             }),
         };
         Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
@@ -257,7 +258,7 @@ const array = [
     ['text', new TextModuleConfig()],
     ['metadata', new MetadataModuleConfig()],
     ['weather', new WeatherModuleConfig()],
-    ['people', new PeopleModuleConfig()]
+    ['people', new PeopleModuleConfig()],
     /*
     ['another module', new AnotherModuleConfig()],
     */
