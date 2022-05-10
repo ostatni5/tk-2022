@@ -30,10 +30,7 @@
             items.push({
                 index: items.length + 1,
                 url: item.split('\\').join('/'),
-                size: 'NA',
-                dimensions: 'NA',
-                name: item.replace(/^.*[\\\/]/, ''), // this regex removes everything before filename
-                created: new Date().toLocaleString()
+                name: item.replace(/^.*[\\\/]/, '') // this regex removes everything before filename
             })
         }
         searching = false;
