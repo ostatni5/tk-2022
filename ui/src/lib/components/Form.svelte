@@ -3,7 +3,7 @@
     import { slide } from 'svelte/transition';
     import { flashOptions } from '../utils/flashOptions';
     import { weatherOptions } from '../utils/weatherOptions';
-    import formConfigMap, {isMetadataConfig, isTextConfig, isWeatherConfig, FormRange} from '../utils/moduleFormConfig';
+    import formConfigMap, {isMetadataConfig, isTextConfig, isWeatherConfig, isPeopleConfig, FormRange} from '../utils/moduleFormConfig';
 
     export let searching = false;
 
@@ -108,7 +108,7 @@
                     >Created after
                     <input
                         type="date"
-                        bind:value={formConfigMap['metadata']._createdAfter}
+                        bind:value={formConfigMap['metadata']._dateAfter}
                         on:change={changeDate}
                     />
                 </label>
@@ -116,7 +116,7 @@
                     >Created before
                     <input
                         type="date"
-                        bind:value={formConfigMap['metadata']._createdBefore}
+                        bind:value={formConfigMap['metadata']._dateBefore}
                         on:change={changeDate}
                     />
                 </label>
@@ -276,6 +276,50 @@
                         min="0"
                         max="9"
                         step="1"
+                    />
+                </label>
+            </div>
+        {/if}
+    </div>
+
+
+    <!-- PEOPLE SECTION -->
+    <div class="inputContainer">
+        <p class="inputContainerTitle" on:click={handleClick('people')}>
+            <input
+                type="checkbox"
+                bind:checked={formConfigMap['people']._active}
+                on:click|stopPropagation
+            />
+            People <i class="arrow {moduleUis['people'].arrowDirection}" />
+        </p>
+        {#if moduleUis['people'].visible && isPeopleConfig(formConfigMap['people'])}
+            <div class="moduleForm" transition:slide>
+                <label
+                    >Has People
+                    <input type="checkbox" bind:checked={formConfigMap['people']._hasPeople} />
+                </label>
+                <br/>
+                <label class="range"
+                    >Min number of people
+                    <input
+                        type="number"
+                        name="minPeople"
+                        bind:value={formConfigMap['people']._count.min}
+                        on:change={handleRangeChange(formConfigMap['people']._count, 'min')}
+                        min="0"
+                        disabled={!formConfigMap['people']._hasPeople}
+                    />
+                </label>
+                <label class="range"
+                    >Max number of people
+                    <input
+                        type="number"
+                        name="maxPeople"
+                        bind:value={formConfigMap['people']._count.max}
+                        on:change={handleRangeChange(formConfigMap['people']._count, 'max')}
+                        min="0"
+                        disabled={!formConfigMap['people']._hasPeople}
                     />
                 </label>
             </div>
