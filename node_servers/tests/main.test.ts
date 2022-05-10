@@ -3,7 +3,7 @@ import main from '../src/modules/mainModule/main';
 import { serialize, deserialize } from 'bson';
 import process from 'process';
 
-const rootPath = process.cwd().split('\\').join('/').split('/server')[0];
+const rootPath = process.cwd().split('\\').join('/').split('/node_servers')[0];
 
 const testCases = [
 	{
