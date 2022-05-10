@@ -39,7 +39,7 @@ export const promiseReduce: (
 ) => Promise<string[]> = (configs, pictures) =>
 	configs.reduce(
 		(prevPromise, { route, options }) =>
-			prevPromise.then((paths) => picturePromise(route, { paths, options })),
+			prevPromise.then((paths) => picturePromise(route, { paths, options })).catch(()=>[]),
 		(async () => {
 			return pictures;
 		})(),

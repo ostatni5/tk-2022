@@ -1,0 +1,52 @@
+# TODO: Fix action #70
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Cpp CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - people_server/**
+
+  pull_request:
+    branches: [main]
+    paths:
+      - people_server/**
+
+# see https://github.community/t/treating-warnings-as-errors-because-process-env-ci-true/18032
+env:
+  CI: false
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache OpenCV
+        id: opencv-cache
+        uses: actions/cache@v2
+        with:
+          path: ./opencv-install
+          key: ${{ runner.os }}-opencv-cache
+
+      - name: Install OpenCV
+        uses: rayandrews/with-opencv-action@v1
+        with:  
+          dir: ./opencv-install
+          cached: ${{ steps.opencv-cache.outputs.cache-hit }}
+          opencv-version: '4.5.5'
+
+      - run: pip install conan   
+
+      - working-directory: ./people_server
+        run: mkdir build
+
+      - working-directory: ./people_server/build
+        run: |
+          export CONAN_SYSREQUIRES_MODE=enabled
+          conan install ..
+          cmake ..
+          cmake --build .
