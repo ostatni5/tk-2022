@@ -58,7 +58,7 @@
 
     const handleRangeChange = (range: FormRange, property: keyof FormRange) => (e: Event) => {
         let input = e.target as HTMLInputElement;
-        input.value = range.clamp(property, parseFloat(input.value)).toString();
+        input.value = (range.clamp(property, parseFloat(input.value)) ?? '').toString();
     };
 
     const handleSubmit = () => {

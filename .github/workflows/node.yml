@@ -6,8 +6,14 @@ name: Node.js CI
 on:
   push:
     branches: [main]
+    paths:
+      - node_servers/**
+      - server/**
   pull_request:
     branches: [main]
+    paths:
+      - node_servers/**
+      - server/**
 
 # see https://github.community/t/treating-warnings-as-errors-because-process-env-ci-true/18032
 env:

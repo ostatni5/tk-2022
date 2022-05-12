@@ -1,3 +1,4 @@
+from importlib.resources import path
 from marshmallow import Schema, fields
 from flask_restful import Resource
 from flask import make_response, request
@@ -36,9 +37,12 @@ class WeatherModule(Resource):
                         results: filtering list for paths that contain weather_type
         """
         for k in range(len(paths)):
-            result = pwii(paths[k])
-            top_n_weather_types = list(result.keys())[:precision+1]
-            results[k] = weather_type in top_n_weather_types
+            try:
+                result = pwii(paths[k])
+                top_n_weather_types = list(result.keys())[:precision+1]
+                results[k] = weather_type in top_n_weather_types
+            except Exception as e:
+                print("Exception: ", e)
 
     @staticmethod
     def separate_problem_into_chunks(array):
@@ -71,6 +75,11 @@ class WeatherModule(Resource):
         threads = []
         weather_type = json_data.get("options").get("weatherType")
         precision = json_data.get("options").get("precision", 0)
+
+        if(len(paths) == 0):
+            return make_response({
+                "pictures": [],
+            }, 200)
 
         # split paths into chunks
         [paths_chunks, filter_chunks] = WeatherModule.separate_problem_into_chunks(

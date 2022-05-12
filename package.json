@@ -1,22 +1,22 @@
 {
-    "name": "tk-2022",
-    "version": "1.0.0",
-    "description": "",
-    "workspaces": [
-        "ui",
-        "node_servers"
-    ],
-    "scripts": {
-        "test": "echo \"Error: no test specified. Run /w flag --workspaces to test submodules.\" && exit 1"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/ostatni5/tk-2022.git"
-    },
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/ostatni5/tk-2022/issues"
-    },
-    "homepage": "https://github.com/ostatni5/tk-2022#readme"
+  "name": "tk-2022",
+  "version": "1.0.0",
+  "description": "",
+  "workspaces": [
+    "node_servers",
+    "ui"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified. Run /w flag --workspaces to test submodules.\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ostatni5/tk-2022.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ostatni5/tk-2022/issues"
+  },
+  "homepage": "https://github.com/ostatni5/tk-2022#readme"
 }
