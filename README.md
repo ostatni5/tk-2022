@@ -161,7 +161,7 @@ Build steps:
     $ mkdir build && cd build
     $ conan install ..
     $ cmake ..
-    $ cmake --build .
+    $ cmake --build . --config=Release
 
 To start server run executable named `peopleServer`
 
