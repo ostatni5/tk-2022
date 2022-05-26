@@ -1,5 +1,6 @@
 import type { FlashType } from './flashOptions';
 import type { WeatherType } from './weatherOptions';
+import type {AnimalSpecies} from "./animalSpecies";
 
 function notEmptyString(value: string): string {
     if (value.length === 0) return undefined;
@@ -254,11 +255,166 @@ export function isPeopleConfig(config: AbstractModuleConfig): config is PeopleMo
     return config.name === 'people';
 }
 
+class FormatModuleConfig extends AbstractModuleConfig {
+    allFormats = [
+        ".jpeg", ".jpeg2000", ".gif", ".bmp", ".png",
+        ".webp", ".ico", ".img", ".xcf", ".cgm", ".svg",
+        ".blend", ".xaml", ".pdf", ".jpg"
+    ];
+    _selectedFormats: string[];
+
+    get allConfig() {
+        const { name, _selectedFormats } = this;
+        const obj = {
+            name,
+            _selectedFormats,
+        };
+        Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
+        return obj;
+    }
+    constructor() {
+        super('format');
+        this._selectedFormats = [];
+    }
+}
+
+export function isFormatConfig(config: AbstractModuleConfig): config is FormatModuleConfig {
+    return config.name === 'format';
+}
+
+class StyleModuleConfig extends AbstractModuleConfig {
+    allTypes = [
+        "photo", "clip art", "line drawing"
+    ];
+    _selectedTypes: string[];
+
+    get allConfig() {
+        const { name, _selectedTypes } = this;
+        const obj = {
+            name,
+            _selectedTypes,
+        };
+        Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
+        return obj;
+    }
+    constructor() {
+        super('style');
+        this._selectedTypes = [];
+    }
+}
+
+export function isStyleConfig(config: AbstractModuleConfig): config is StyleModuleConfig {
+    return config.name === 'style';
+}
+
+class BodyModuleConfig extends AbstractModuleConfig {
+    faceChecked: boolean;
+    _faceWeight: number;
+    get faceWeight() {
+        return notNullNumber(this._faceWeight);
+    }
+    handsChecked: boolean;
+    _handsWeight: number;
+    get handsWeight() {
+        return notNullNumber(this._handsWeight);
+    }
+
+    get allConfig() {
+        const { name, faceChecked, faceWeight, handsChecked, handsWeight } = this;
+        const obj = {
+            name,
+            faceChecked,
+            ...(faceChecked && {
+                faceWeight,
+            }),
+            handsChecked,
+            ...(handsChecked && {
+                handsWeight,
+            }),
+        };
+        Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
+        return obj;
+    }
+    constructor() {
+        super('body');
+        this.faceChecked = false;
+        this.handsChecked = false;
+    }
+}
+
+export function isBodyConfig(config: AbstractModuleConfig): config is BodyModuleConfig {
+    return config.name === 'body';
+}
+
+class AnimalModuleConfig extends AbstractModuleConfig {
+    _animalSpecies: AnimalSpecies;
+    get animalSpecies() {
+        return notEmptyString(this._animalSpecies);
+    }
+    _weight: number;
+    get weight() {
+        return notNullNumber(this._weight);
+    }
+    get allConfig() {
+        const { name, animalSpecies, weight } = this;
+        const obj = { name, animalSpecies, weight };
+        Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
+        return obj;
+    }
+    constructor() {
+        super('animal');
+        this._animalSpecies = 'tiger';
+        this._weight = null;
+    }
+}
+
+export function isAnimalConfig(config: AbstractModuleConfig): config is AnimalModuleConfig {
+    return config.name === 'animal';
+}
+
+class ThingsModuleConfig extends AbstractModuleConfig {
+    imagePath: string;
+    pathValid: boolean;
+
+    checkIfValid = (e: Event) => {
+        const re =
+            /^(\/.*|[a-zA-Z]:[\\/](?:([^<>:"\/\\|?*]*[^<>:"\/\\|?*.][\\/]|..[\\/])*([^<>:"\/\\|?*]*[^<>:"\/\\|?*.][\\/]?|..[\\/]))?)$/;
+        this.pathValid = re.test((e.target as HTMLInputElement).value);
+    }
+
+    get allConfig() {
+        const { name, imagePath, pathValid } = this;
+        const obj = {
+            name,
+            pathValid,
+            ...(pathValid && {
+                imagePath,
+            }),
+        };
+        Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
+        return obj;
+    }
+    constructor() {
+        super('things');
+        this.imagePath = '';
+        this.pathValid = true;
+    }
+}
+
+export function isThingsConfig(config: AbstractModuleConfig): config is ThingsModuleConfig {
+    return config.name === 'things';
+}
+
 const array = [
     ['text', new TextModuleConfig()],
     ['metadata', new MetadataModuleConfig()],
     ['weather', new WeatherModuleConfig()],
     ['people', new PeopleModuleConfig()],
+    ['format', new FormatModuleConfig()],
+    ['style', new StyleModuleConfig()],
+    ['body', new BodyModuleConfig()],
+    ['animal', new AnimalModuleConfig()],
+    ['things', new ThingsModuleConfig()],
     /*
     ['another module', new AnotherModuleConfig()],
     */
