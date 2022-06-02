@@ -400,12 +400,12 @@
                     Minimal confidence
                     <input
                             type="number"
-                            name="faceWeight"
-                            bind:value={formConfigMap['weather']._faceWeight}
+                            name="faceConfidence"
+                            bind:value={formConfigMap['body']._faceConfidence}
                             min="1"
                             max="100"
                             step="1"
-                            disabled={!moduleUis['body'].faceChecked}/>
+                            disabled={!moduleUis['body'].faceConfidence}/>
                 </label>
 
                 <label>
@@ -416,8 +416,8 @@
                     Minimal confidence
                     <input
                             type="number"
-                            name="handsWeight"
-                            bind:value={formConfigMap['weather']._handsWeight}
+                            name="handsConfidence"
+                            bind:value={formConfigMap['body']._handsConfidence}
                             min="1"
                             max="100"
                             step="1"
@@ -451,8 +451,8 @@
                     Minimal confidence
                     <input
                             type="number"
-                            name="weight"
-                            bind:value={formConfigMap['animal']._weight}
+                            name="confidence"
+                            bind:value={formConfigMap['animal']._confidence}
                             min="1"
                             max="100"
                             step="1"/>

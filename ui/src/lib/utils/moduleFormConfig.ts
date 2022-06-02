@@ -309,27 +309,27 @@ export function isStyleConfig(config: AbstractModuleConfig): config is StyleModu
 
 class BodyModuleConfig extends AbstractModuleConfig {
     faceChecked: boolean;
-    _faceWeight: number;
-    get faceWeight() {
-        return notNullNumber(this._faceWeight);
+    _faceConfidence: number;
+    get faceConfidence() {
+        return notNullNumber(this._faceConfidence);
     }
     handsChecked: boolean;
-    _handsWeight: number;
-    get handsWeight() {
-        return notNullNumber(this._handsWeight);
+    _handsConfidence: number;
+    get handsConfidence() {
+        return notNullNumber(this._handsConfidence);
     }
 
     get allConfig() {
-        const { name, faceChecked, faceWeight, handsChecked, handsWeight } = this;
+        const { name, faceChecked, faceConfidence, handsChecked, handsConfidence } = this;
         const obj = {
             name,
             faceChecked,
             ...(faceChecked && {
-                faceWeight,
+                faceConfidence,
             }),
             handsChecked,
             ...(handsChecked && {
-                handsWeight,
+                handsConfidence,
             }),
         };
         Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
@@ -351,20 +351,20 @@ class AnimalModuleConfig extends AbstractModuleConfig {
     get animalSpecies() {
         return notEmptyString(this._animalSpecies);
     }
-    _weight: number;
-    get weight() {
-        return notNullNumber(this._weight);
+    _confidence: number;
+    get confidence() {
+        return notNullNumber(this._confidence);
     }
     get allConfig() {
-        const { name, animalSpecies, weight } = this;
-        const obj = { name, animalSpecies, weight };
+        const { name, animalSpecies, confidence } = this;
+        const obj = { name, animalSpecies, confidence };
         Object.keys(obj).forEach((key) => obj[key] === undefined && delete obj[key]);
         return obj;
     }
     constructor() {
         super('animal');
         this._animalSpecies = 'tiger';
-        this._weight = null;
+        this._confidence = null;
     }
 }
 
