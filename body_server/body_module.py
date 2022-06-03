@@ -8,8 +8,10 @@ from check_json import check_json
 class _OptionsSchema(Schema):
     """Class specifies module options"""
     name = fields.String(required=False)
-    bodyType = fields.String(required=True)
-    precision = fields.Integer(required=False)
+    handsChecked = fields.Bool(required=True)
+    faceChecked = fields.Bool(required=True)
+    faceConfidence = fields.Integer(required=False)
+    handsConfidence = fields.Integer(required=False)
 
 
 class _Schema(Schema):
@@ -26,16 +28,17 @@ class BodyModule(Resource):
         """
         Predict weather in image using trained model.
         Args:
-                        body_type: body type user wants to find
-                        paths: list of image paths to predict weather in
+                        body_type: dic with body type user wants to find with minimum confidence
+                        paths: list of image paths to predict body in
         """
-        results = {}
-        for k in range(len(paths)):
-            if body_type == 'Hands':
-                results[paths[k]] = hand_detection(paths[k])
-            else:
-                results[paths[k]] = face_detection(paths[k])
-        return results
+
+        if "face_check" in body_type:
+            paths = [x for x in paths if face_detection(x) >= int(body_type["face_check"])]
+
+        if "hand_check" in body_type:
+            paths = [x for x in paths if hand_detection(x) >= int(body_type["hand_check"])]
+
+        return paths
 
     @staticmethod
     def post():
@@ -48,7 +51,6 @@ class BodyModule(Resource):
             return make_response(errors, 400)
 
         json_data: dict = request.get_json(force=True)
-
         response_err = check_json(json_data)
         if response_err:
             print("Response error: ", response_err)
@@ -56,15 +58,22 @@ class BodyModule(Resource):
 
         # load data
         paths = json_data.get("paths")
-        body_type = json_data.get("options").get("bodyType")
-        precision = json_data.get("options").get("precision", 50)
+        face_check = json_data.get("options").get("faceChecked")
+        hand_check = json_data.get("options").get("handsChecked")
 
-        filter_paths = []
+        dic_setting = {}
+        if face_check:
+            if not json_data.get("options").get("faceConfidence"):
+                dic_setting["face_check"] = 1
+            else:
+                dic_setting["face_check"] = json_data.get("options").get("faceConfidence")
 
-        unfiltered_dic = BodyModule.get_body(body_type, paths)
+        if hand_check:
+            if not json_data.get("options").get("handsConfidence"):
+                dic_setting["hand_check"] = 1
+            else:
+                dic_setting["hand_check"] = json_data.get("options").get("handsConfidence")
 
-        for key, value in unfiltered_dic.items():
-            if value > int(precision):
-                filter_paths.append(key)
+        filter_paths = BodyModule.get_body(dic_setting, paths)
 
         return make_response({"pictures": filter_paths, }, 200)

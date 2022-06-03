@@ -16,10 +16,7 @@ def check_json(json_data):
     if not json_data.get("options"):
         error = "No options specified"
 
-    if not json_data.get("options").get("bodyType"):
+    if not (json_data.get("options").get("faceChecked") or json_data.get("options").get("handsChecked")):
         error = "No body type specified"
 
-    body_type = json_data.get("options").get("bodyType")
-    if body_type not in ["Hands", "Faces"]:
-        error = f"Invalid weather type: {body_type}"
     return error
