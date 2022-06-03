@@ -152,6 +152,41 @@ Testing the weather node from the root directory:
 
     $ python -m pytest ./weather_server/test/test_module.py
 
+
+### Body node (Flask):
+
+    $ cd body_server
+
+Build steps:
+
+    $ python -m venv ./env
+
+    For Windows:
+
+    $ ./env/Scripts/Activate.ps1 (or .bat)
+
+    or for Linux/Mac:
+
+    $ ./env/Scripts/activate
+
+    Then:
+    $ python -m pip install -r requirements.txt
+
+Running the body node from the root directory:
+
+    $ python -m ./body_server
+
+    or from the body_server directory:
+
+    $ python ./
+
+Testing the body node from the root directory:
+
+    $ cd .\body_server\
+
+    $ python -m pytest
+
+
 ### People node (C++):
 
     $ cd people_server

@@ -390,10 +390,10 @@
             />
             Body parts <i class="arrow {moduleUis['body'].arrowDirection}"/>
         </p>
-        {#if moduleUis['body'].visible && isBodyConfig(formConfigMap['body'])}
+               {#if moduleUis['body'].visible && isBodyConfig(formConfigMap['body'])}
             <div class="moduleForm one" transition:slide>
                 <label>
-                    <input type=checkbox bind:checked={moduleUis['body'].faceChecked}>
+                    <input type=checkbox bind:checked={formConfigMap['body'].faceChecked}>
                     Detect faces
                 </label>
                 <label>
@@ -405,11 +405,11 @@
                             min="1"
                             max="100"
                             step="1"
-                            disabled={!moduleUis['body'].faceConfidence}/>
+                            disabled={!formConfigMap['body'].faceChecked}/>
                 </label>
 
                 <label>
-                    <input type=checkbox bind:checked={moduleUis['body'].handsChecked}>
+                    <input type=checkbox bind:checked={formConfigMap['body'].handsChecked}>
                     Detect hands
                 </label>
                 <label>
@@ -421,7 +421,7 @@
                             min="1"
                             max="100"
                             step="1"
-                            disabled={!moduleUis['body'].handsChecked}/>
+                            disabled={!formConfigMap['body'].handsChecked}/>
                 </label>
             </div>
         {/if}
