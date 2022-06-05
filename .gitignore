@@ -12,3 +12,4 @@ node_modules
 .vscode
 __pycache__
 weather_server/env
+format_server/env

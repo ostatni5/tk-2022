@@ -38,6 +38,7 @@ mainModule.get('/image/*', (req, res) => {
 async function handleRequest(payload: Buffer): Promise<string[]> {
 	const request = new PictureRequest(payload);
 	const picturePromises: Promise<any>[] = [];
+	console.log(request);
 
 	const pictureGenerator = directoryImagesGenerator(request.path, true);
 

@@ -10,4 +10,5 @@ export const ModuleRoutes = {
 	people: 'http://localhost:8087/',
 	weather: 'http://localhost:8086/',
 	body: 'http://localhost:8090/',
+	format: 'http://localhost:8094/'
 };
