@@ -1,0 +1,92 @@
+version: "3.3"
+
+services:
+  ui-node:
+    ports: 
+      - "8888:8888"
+    build:
+      dockerfile: ./docker/node/Dockerfile
+      context: ..
+      args:
+        port: 8888
+        src_dir: ui
+        version: 18-bullseye-slim 
+    image: tk-ui-node
+    container_name: tk-ui
+    depends_on:
+      - "main-node"
+    command: "npm run dev -- --host --port 8888"
+#    command: "bash"
+#    tty: true
+
+
+  main-node:
+    ports:
+      - "8890:8890"
+    build: 
+      dockerfile: ./docker/node/Dockerfile
+      context: ..
+      args:
+        port: 8890
+        src_dir: node_servers
+        version: 18-bullseye-slim 
+    image: tk-main-node 
+    container_name: tk-main
+    depends_on:
+      - "text-elixir"
+      - "people-cpp"
+      - "weather-python"
+    command: "npm run start"
+#    command: "bash"
+
+
+  text-elixir:
+    ports:
+      - "8085:8085"
+    build:
+      dockerfile: ./docker/elixir/Dockerfile
+      context: ..
+      args:
+        port: 8085
+        src_dir: text_server
+        version: 1.13.4-slim
+    image: tk-text-elixir
+    container_name: tk-text
+    command: "iex -S mix"
+    # Attach terminal to iex command
+    tty: true
+
+
+  people-cpp:
+    ports:
+      - "8087:8087"
+    build:
+      dockerfile: ./docker/cpp/Dockerfile
+      context: ..
+      args:
+        port: 8087
+        src_dir: people_server
+        version: 12.1.0
+    image: tk-people-cpp
+    container_name: tk-people
+    command: "sh -c \"cd src && ./out\""
+#    command: "bash"
+#    tty: true
+
+
+  weather-python:
+    ports:
+      - "8086:8086"
+    build:
+      dockerfile: ./docker/python/Dockerfile
+      context: ..
+      args:
+        port: 8086
+        src_dir: weather_server
+        version: 3.10.4-slim-bullseye
+    image: tk-weather-python
+    container_name: tk-weather
+    command: "python3 ./"
+#    command: "bash"
+#    tty: true
+
