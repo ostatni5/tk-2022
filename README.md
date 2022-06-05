@@ -206,7 +206,7 @@ Build steps:
     Then:
     $ python -m pip install -r requirements.txt
 
-Running the body node from the root directory:
+Running the style node from the root directory:
 
     $ python -m ./style_server
 
@@ -214,7 +214,7 @@ Running the body node from the root directory:
 
     $ python ./
 
-Testing the body node from the root directory:
+Testing the style node from the root directory:
 
     $ cd .\style_server\
 
