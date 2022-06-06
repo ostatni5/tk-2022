@@ -8,7 +8,7 @@ from check_json import check_json
 class _OptionsSchema(Schema):
     """Class specifies module options"""
     name = fields.String(required=False)
-    _selectedFormats = fields.List(fields.String())
+    _selectedFormats = fields.List(fields.String(), required=True)
 
 
 class _Schema(Schema):
@@ -25,7 +25,7 @@ class FormatModule(Resource):
         """
         Returns pictures that have desired format.
         Args:
-                        desired_formats: list of desired formats
+                        desired_formats: list of desired formats ([".jpg", ".jp2"])
                         paths: list of image paths to check for desired format
         """
         paths = [x for x in paths if check_for_formats(x, desired_formats)]
@@ -53,6 +53,6 @@ class FormatModule(Resource):
         paths = json_data.get("paths")
         desired_formats = json_data.get("options").get("_selectedFormats")
 
-        filter_paths = BodyModule.get_desired_formats(desired_formats, paths)
+        filter_paths = FormatModule.get_desired_formats(desired_formats, paths)
 
         return make_response({"pictures": filter_paths, }, 200)

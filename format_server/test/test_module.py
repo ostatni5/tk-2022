@@ -1,19 +1,19 @@
 import pytest
 from create_app import create_app
-from format_module import BodyModule
+from format_module import FormatModule
 import os
 
-ROOT_PATH = os.getcwd().split("body_server")[0].replace(os.sep, '/')
+ROOT_PATH = os.getcwd().split("format_server")[0].replace(os.sep, '/')
 
 
-class TestBodyRest:
+class TestFormatRest:
     paths = [
-        os.path.join(ROOT_PATH, "resources/BodyPeople/Musk.jpg"),
-        os.path.join(ROOT_PATH, "resources/BodyPeople/Apple.png"),
-        os.path.join(ROOT_PATH, "resources/BodyPeople/Face.jpg")
+        os.path.join(ROOT_PATH, "resources/format/mike.jpg"),
+        os.path.join(ROOT_PATH, "resources/format/marian.jpeg"),
+        os.path.join(ROOT_PATH, "resources/format/tiger.png")
     ]
 
-    body_type = "Faces"
+    selected_formats = [".jpg", ".png"]
 
     @pytest.fixture()
     def app(self):
@@ -25,26 +25,31 @@ class TestBodyRest:
     def client(self, app):
         return app.test_client()
 
-    def test_predict_type(self):
-        result = BodyModule.get_body(self.body_type, self.paths[0])
+    def test_find_jpg(self):
+        desired_formats = [".jpg"]
+        result = FormatModule.get_desired_formats(desired_formats, self.paths)
         print(result)
-        assert isinstance(result, dict)
+        assert result == [self.paths[0]]
 
-    def test_detect_hands(self):
-        self.body_type = "Hands"
-        results = BodyModule.get_body(self.body_type, self.paths)
-        assert all(value >= result for (key, value), result in zip(results.items(), [50, 0, 0]))
+    def test_find_png(self):
+        desired_formats = [".png"]
+        result = FormatModule.get_desired_formats(desired_formats, self.paths)
+        print(result)
+        assert result == [self.paths[2]]
 
-    def test_detect_faces(self):
-        results = BodyModule.get_body(self.body_type, self.paths)
-        assert all(value >= result for (key, value), result in zip(results.items(), [0, 0, 50]))
+    def test_find_jpg_and_png(self):
+        desired_formats = [".jpg", ".png"]
+        result = FormatModule.get_desired_formats(desired_formats, self.paths)
+        print(result)
+        assert result == [self.paths[0], self.paths[2]]
 
     def test_get_body_api(self, client):
         body = {"paths": self.paths, "options": {
-            "bodyType": self.body_type, "precision": 0}}
+            "_selectedFormats": self.selected_formats}}
 
         response = client.post("/", json=body)
         print("Response", response.json)
         assert response.status_code == 200
         assert len(response.json["pictures"]) == 2
         assert response.json["pictures"][0] == self.paths[0]
+        assert response.json["pictures"][1] == self.paths[2]
